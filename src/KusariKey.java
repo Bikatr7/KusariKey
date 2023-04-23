@@ -9,28 +9,58 @@ public class KusariKey
     public static void main(String[] args) throws Exception 
     {
         String masterPass;
+        String userInput= "L";
 
-        masterPass = login();
+        Scanner input = new Scanner(System.in);
+
+        clearConsole();
+
+        masterPass = logon(input);
+
+        while(!userInput.toLowerCase().equals("q"))
+        {
+            System.out.println("1. View Passwords");
+            System.out.println("2. Change Master Password");
+            System.out.println("Q. Exit");
+
+
+            userInput = input.nextLine();
+
+            if(userInput.toLowerCase().equals("1") == true)
+            {
+
+            }
+            else if(userInput.toLowerCase().equals("2") == true)
+            {
+                resetMasterPass();
+            }
+
+            clearConsole();
+
+        }
+
+        System.exit(0);
+
 
     }
+    
+//-------------------start-of-resetMasterPass()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//-------------------start-of-addPassword()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    public static void addPassword()
+    public static void resetMasterPass()
     {
 
     }
 
 //-------------------start-of-login()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static String login() throws Exception
+    public static String logon(Scanner input) throws Exception
     {
         setup();
 
+        
         File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
 
         Scanner reader = new Scanner(masterPassFile);
-        Scanner input = new Scanner(System.in);
 
         String userMasterPass = "L";
         String actualMasterPass = "W";
@@ -55,7 +85,6 @@ public class KusariKey
         }
 
         reader.close();
-        input.close();
 
         return actualMasterPass;
 
@@ -94,10 +123,18 @@ public class KusariKey
 
 //-------------------start-of-clearConsole()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+public static void clearConsole() 
+{
+    try 
+    {
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+    } 
+    catch (IOException | InterruptedException ex) 
+    {
+        // skip
     }
+}
+
     
 }
 
