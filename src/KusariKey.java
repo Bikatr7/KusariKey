@@ -1,8 +1,8 @@
 import java.util.*;
 import java.io.*;
 
-import EncryptDecrypt.Encryption;
-import EncryptDecrypt.Decryption;
+import EncryptDecrypt.*;
+import CoreModule.*;
 
 public class KusariKey 
 {
@@ -13,7 +13,7 @@ public class KusariKey
 
         Scanner input = new Scanner(System.in);
 
-        clearConsole();
+        Core.clearConsole();
 
         masterPass = logon(input);
 
@@ -26,18 +26,22 @@ public class KusariKey
 
             userInput = input.nextLine();
 
+            Core.clearConsole();
+
             if(userInput.toLowerCase().equals("1") == true)
             {
 
             }
             else if(userInput.toLowerCase().equals("2") == true)
             {
-                resetMasterPass();
+                masterPass = resetMasterPass(input);
             }
 
-            clearConsole();
+            Core.clearConsole();
 
         }
+
+        input.close();
 
         System.exit(0);
 
@@ -46,9 +50,55 @@ public class KusariKey
     
 //-------------------start-of-resetMasterPass()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static void resetMasterPass()
+    public static String resetMasterPass(Scanner input) throws Exception
     {
+        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
 
+        Scanner reader = new Scanner(masterPassFile);
+
+        String userMasterPass = "L";
+        String actualMasterPass = "W";
+        String newMasterPass = "K";
+
+        String encryptedNewPass;
+
+        while(!userMasterPass.equals(actualMasterPass))
+        {
+            while(userMasterPass.length() != 16)
+            {
+    
+                System.out.println("Please enter the master password to reset your master password (Default is 123456789ABCDEFG)");
+
+                userMasterPass = input.nextLine();
+
+                Core.clearConsole();
+
+            }
+
+            actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
+
+            Core.clearConsole();
+        
+        }
+
+        reader.close();
+
+        while(newMasterPass.length() != 16)
+        {
+
+            newMasterPass = Core.userConfirm("Please enter a new master password (Please note a password must be 16 characters)", input);
+
+            Core.clearConsole();
+
+        }
+
+        encryptedNewPass = Encryption.encrypt(newMasterPass,newMasterPass);
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(masterPassFile));
+        writer.write(encryptedNewPass);
+        writer.close();
+
+        return newMasterPass;
     }
 
 //-------------------start-of-login()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,7 +107,6 @@ public class KusariKey
     {
         setup();
 
-        
         File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
 
         Scanner reader = new Scanner(masterPassFile);
@@ -74,13 +123,13 @@ public class KusariKey
 
                 userMasterPass = input.nextLine();
 
-                clearConsole();
+                Core.clearConsole();
 
             }
 
             actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
 
-            clearConsole();
+            Core.clearConsole();
         
         }
 
@@ -108,6 +157,8 @@ public class KusariKey
             masterPassFile.createNewFile();
         }
 
+        System.out.print(masterPassFile.length());
+
         if(masterPassFile.length() == 0)
         {
             BufferedWriter writer = new BufferedWriter(new FileWriter(masterPassFile));
@@ -120,20 +171,6 @@ public class KusariKey
             writer.close();
         }
     }
-
-//-------------------start-of-clearConsole()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-public static void clearConsole() 
-{
-    try 
-    {
-        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-    } 
-    catch (IOException | InterruptedException ex) 
-    {
-        // skip
-    }
-}
 
     
 }
