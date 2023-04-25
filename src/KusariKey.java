@@ -11,16 +11,34 @@ public class KusariKey
         String masterPass;
         String userInput= "L";
 
+        setup();
+
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+
+        Scanner reader = new Scanner(passwordFile);
         Scanner input = new Scanner(System.in);
+
+        int lines = 0;
+
+        while (reader.hasNextLine())
+        {
+            lines++;
+            reader.nextLine();
+        }
+
+        Login[] passwords = new Login[lines];
 
         Core.clearConsole();
 
         masterPass = logon(input);
 
+        getPasswords(passwords,masterPass);
+
         while(!userInput.toLowerCase().equals("q"))
         {
             System.out.println("1. View Passwords");
             System.out.println("2. Change Master Password");
+            System.out.println("3. Add Password");
             System.out.println("Q. Exit");
 
 
@@ -30,11 +48,17 @@ public class KusariKey
 
             if(userInput.toLowerCase().equals("1") == true)
             {
-
+                System.out.print("l");
+                viewPasswords(input, passwords, masterPass);
+                System.out.print("l");
             }
             else if(userInput.toLowerCase().equals("2") == true)
             {
                 masterPass = resetMasterPass(input);
+            }
+            else if(userInput.toLowerCase().equals("3") == true)
+            {
+                addPassword("test", "test", "test", masterPass);
             }
 
             Core.clearConsole();
@@ -42,6 +66,7 @@ public class KusariKey
         }
 
         input.close();
+        reader.close();
 
         System.exit(0);
 
@@ -74,8 +99,15 @@ public class KusariKey
                 Core.clearConsole();
 
             }
-
-            actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
+            
+            try
+            {
+                actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
+            }
+            catch(Exception e)
+            {
+                userMasterPass = "";
+            }
 
             Core.clearConsole();
         
@@ -98,15 +130,30 @@ public class KusariKey
         writer.write(encryptedNewPass);
         writer.close();
 
+        redoPasswords(actualMasterPass,newMasterPass);
+
         return newMasterPass;
     }
 
+//-------------------start-of-getPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static void getPasswords(Login[] passwords,String masterPass) throws Exception
+    {
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+
+        Scanner reader = new Scanner(passwordFile);
+
+        for(int i = 0; i < passwords.length; i++)
+        {
+            passwords[i] = new Login(Encryption.encrypt(reader.next(), masterPass), Encryption.encrypt(reader.next(), masterPass),Encryption.encrypt(reader.nextLine().strip(), masterPass));
+        }
+
+        reader.close();
+    }
 //-------------------start-of-login()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     public static String logon(Scanner input) throws Exception
     {
-        setup();
-
         File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
 
         Scanner reader = new Scanner(masterPassFile);
@@ -127,7 +174,16 @@ public class KusariKey
 
             }
 
-            actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
+            try
+            {
+                actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
+
+            } 
+            catch (Exception e) 
+            {
+                userMasterPass = "";
+            }
+
 
             Core.clearConsole();
         
@@ -139,6 +195,91 @@ public class KusariKey
 
     }
 
+//-------------------start-of-viewPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static void viewPasswords(Scanner input,Login[] passwords,String masterPass) throws Exception
+    {
+
+        for(int i = 0; i < passwords.length; i++)
+        {
+            System.out.println(Decryption.decrypt(passwords[i].getLoginName(), masterPass));
+            System.out.println(Decryption.decrypt(passwords[i].getEmail(), masterPass));
+            System.out.println(Decryption.decrypt(passwords[i].getPassword(), masterPass));
+
+            System.out.println("");
+        }
+
+        input.nextLine();
+
+    }
+//-------------------start-of-redoPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static void redoPasswords(String oldMasterPass, String newMasterPass) throws Exception
+    {
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+
+        Scanner counter = new Scanner(passwordFile);
+        Scanner reader = new Scanner(passwordFile);
+
+        int lines = 0;
+        int i = 0;
+
+        while (counter.hasNextLine())
+        {
+            lines++;
+            counter.nextLine();
+        }
+
+        String[] emailArray = new String[lines];
+        String[] passwordArray = new String[lines];
+        String[] loginNameArray = new String[lines];
+
+        while(reader.hasNextLine())
+        {
+            String email = Decryption.decrypt(reader.next(), oldMasterPass);
+            String password = Decryption.decrypt(reader.next(), oldMasterPass);
+            String loginName = Decryption.decrypt(reader.nextLine(), oldMasterPass);
+
+            emailArray[i] = email;
+            passwordArray[i] = password;
+            loginNameArray[i] = loginName;
+
+            i+=1;
+        }
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile));
+
+        i = 0;
+
+        while(i < lines)
+        {
+            addPassword(emailArray[i], passwordArray[i], loginNameArray[i], newMasterPass);
+            i+=1;
+        }
+
+        reader.close();
+        counter.close();
+        writer.close();
+
+    }
+
+//-------------------start-of-addPassword()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static void addPassword(String email, String password, String loginName, String masterPass) throws Exception
+    {
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile,true));
+
+        email = Encryption.encrypt(email, masterPass);
+        password = Encryption.encrypt(password, masterPass);
+        loginName = Encryption.encrypt(loginName, masterPass);
+
+        writer.write(email + " " + password +  " "  + loginName + "\n");
+
+        writer.close();
+
+    }
+
 //-------------------start-of-setup()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     public static void setup() throws Exception
@@ -146,6 +287,7 @@ public class KusariKey
 
         File directory = new File("C:\\ProgramData\\KusariKey\\");
         File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
     
         if (!directory.exists()) 
         {
@@ -157,7 +299,10 @@ public class KusariKey
             masterPassFile.createNewFile();
         }
 
-        System.out.print(masterPassFile.length());
+        if (!passwordFile.exists()) 
+        {
+            passwordFile.createNewFile();
+        }
 
         if(masterPassFile.length() == 0)
         {
