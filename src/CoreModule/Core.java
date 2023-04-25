@@ -6,6 +6,33 @@ import java.util.*;
 public class Core 
 {
 
+//--------------------Start-of-getNewID()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static int getNewID(int [] idList)
+    {
+        
+        int expectedNum = 0;
+    
+        for(int i = 0; i < idList.length; i++)
+        {
+            if(idList[i] < expectedNum)
+            {
+                continue;
+            }
+            else if(idList[i] == expectedNum)
+            {
+                expectedNum += 1;
+            }
+            else
+            {
+                return expectedNum;
+            }
+            
+        }
+
+        return expectedNum;
+    }
+
 //-------------------start-of-userConfirm()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     public static String userConfirm(String prompt, Scanner input)
