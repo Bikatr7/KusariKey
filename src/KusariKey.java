@@ -82,8 +82,6 @@ public class KusariKey
         String actualMasterPass = "W";
         String newMasterPass = "K";
 
-        String obfuscatedNewPass;
-
         while(!userMasterPass.equals(actualMasterPass))
         {
             Scanner reader = new Scanner(masterPassFile);
@@ -92,7 +90,7 @@ public class KusariKey
             {
     
                 System.out.println("Please enter the master password to reset your master password (Default is 123456789ABCDEFG)");
-
+ 
                 userMasterPass = input.nextLine();
 
                 Core.clearConsole();
@@ -122,10 +120,8 @@ public class KusariKey
 
         }
 
-        obfuscatedNewPass = newMasterPass;
-
         BufferedWriter writer = new BufferedWriter(new FileWriter(masterPassFile));
-        writer.write(obfuscatedNewPass);
+        writer.write(newMasterPass);
         writer.close();
 
         redoPasswords(actualMasterPass,newMasterPass);
