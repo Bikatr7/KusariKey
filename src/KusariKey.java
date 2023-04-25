@@ -31,8 +31,6 @@ public class KusariKey
 
         masterPass = logon(input);
 
-        getPasswords(passwords,masterPass);
-
         while(!userInput.toLowerCase().equals("q"))
         {
             System.out.println("1. View Passwords");
@@ -40,16 +38,15 @@ public class KusariKey
             System.out.println("3. Add Password");
             System.out.println("Q. Exit");
 
-
             userInput = input.nextLine();
 
             Core.clearConsole();
 
             if(userInput.toLowerCase().equals("1") == true)
             {
-                System.out.print("l");
+                getPasswords(passwords,masterPass);
                 viewPasswords(input, passwords, masterPass);
-                System.out.print("l");
+
             }
             else if(userInput.toLowerCase().equals("2") == true)
             {
@@ -57,7 +54,20 @@ public class KusariKey
             }
             else if(userInput.toLowerCase().equals("3") == true)
             {
-                addPassword("test", "test", "test", masterPass);
+    
+                System.out.print("Email/Username : ");
+                String email = input.nextLine();
+                Core.clearConsole();
+
+                System.out.print("Password : ");
+                String password = input.nextLine();
+                Core.clearConsole();
+                
+                System.out.print("Login Name : ");
+                String loginName = input.nextLine();
+                Core.clearConsole();
+
+                addPassword(email, password, loginName, masterPass);
             }
 
             Core.clearConsole();
@@ -68,8 +78,7 @@ public class KusariKey
         reader.close();
 
         System.exit(0);
-
-
+        
     }
     
 //-------------------start-of-resetMasterPass()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -263,7 +272,7 @@ public class KusariKey
         File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile,true));
 
-        writer.write(email + " " + password +  " "  + loginName + "\n");
+        writer.write('\n' +email + " " + password +  " "  + loginName + "\n");
 
         writer.close();
 
