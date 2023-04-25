@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-import EncryptDecrypt.*;
 import CoreModule.*;
 
 public class KusariKey 
@@ -79,16 +78,16 @@ public class KusariKey
     {
         File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
 
-        Scanner reader = new Scanner(masterPassFile);
-
         String userMasterPass = "L";
         String actualMasterPass = "W";
         String newMasterPass = "K";
 
-        String encryptedNewPass;
+        String obfuscatedNewPass;
 
         while(!userMasterPass.equals(actualMasterPass))
         {
+            Scanner reader = new Scanner(masterPassFile);
+
             while(userMasterPass.length() != 16)
             {
     
@@ -102,18 +101,17 @@ public class KusariKey
             
             try
             {
-                actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
+                actualMasterPass = reader.nextLine();
             }
             catch(Exception e)
             {
                 userMasterPass = "";
+                reader.close();
             }
 
             Core.clearConsole();
         
         }
-
-        reader.close();
 
         while(newMasterPass.length() != 16)
         {
@@ -124,10 +122,10 @@ public class KusariKey
 
         }
 
-        encryptedNewPass = Encryption.encrypt(newMasterPass,newMasterPass);
+        obfuscatedNewPass = newMasterPass;
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(masterPassFile));
-        writer.write(encryptedNewPass);
+        writer.write(obfuscatedNewPass);
         writer.close();
 
         redoPasswords(actualMasterPass,newMasterPass);
@@ -145,7 +143,7 @@ public class KusariKey
 
         for(int i = 0; i < passwords.length; i++)
         {
-            passwords[i] = new Login(Encryption.encrypt(reader.next(), masterPass), Encryption.encrypt(reader.next(), masterPass),Encryption.encrypt(reader.nextLine().strip(), masterPass));
+            passwords[i] = new Login(reader.next(), reader.next(),reader.nextLine().strip());
         }
 
         reader.close();
@@ -156,16 +154,16 @@ public class KusariKey
     {
         File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
 
-        Scanner reader = new Scanner(masterPassFile);
-
         String userMasterPass = "L";
         String actualMasterPass = "W";
 
-        while(!userMasterPass.equals(actualMasterPass))
+        Scanner reader = new Scanner(masterPassFile);
+
+        while(!userMasterPass.equals(actualMasterPass) )
         {
+
             while(userMasterPass.length() != 16)
             {
-    
                 System.out.println("Welcome to KusariKey, Please enter the master password to continue (Default is 123456789ABCDEFG)");
 
                 userMasterPass = input.nextLine();
@@ -176,12 +174,11 @@ public class KusariKey
 
             try
             {
-                actualMasterPass = Decryption.decrypt(reader.nextLine(),userMasterPass);
-
+                actualMasterPass = reader.nextLine();
             } 
             catch (Exception e) 
             {
-                userMasterPass = "";
+                userMasterPass = "F";
             }
 
 
@@ -190,7 +187,7 @@ public class KusariKey
         }
 
         reader.close();
-
+        
         return actualMasterPass;
 
     }
@@ -202,9 +199,9 @@ public class KusariKey
 
         for(int i = 0; i < passwords.length; i++)
         {
-            System.out.println(Decryption.decrypt(passwords[i].getLoginName(), masterPass));
-            System.out.println(Decryption.decrypt(passwords[i].getEmail(), masterPass));
-            System.out.println(Decryption.decrypt(passwords[i].getPassword(), masterPass));
+            System.out.println(passwords[i].getLoginName());
+            System.out.println(passwords[i].getEmail());
+            System.out.println(passwords[i].getPassword());
 
             System.out.println("");
         }
@@ -236,9 +233,9 @@ public class KusariKey
 
         while(reader.hasNextLine())
         {
-            String email = Decryption.decrypt(reader.next(), oldMasterPass);
-            String password = Decryption.decrypt(reader.next(), oldMasterPass);
-            String loginName = Decryption.decrypt(reader.nextLine(), oldMasterPass);
+            String email = reader.next();
+            String password = reader.next();
+            String loginName = reader.nextLine();
 
             emailArray[i] = email;
             passwordArray[i] = password;
@@ -269,10 +266,6 @@ public class KusariKey
     {
         File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile,true));
-
-        email = Encryption.encrypt(email, masterPass);
-        password = Encryption.encrypt(password, masterPass);
-        loginName = Encryption.encrypt(loginName, masterPass);
 
         writer.write(email + " " + password +  " "  + loginName + "\n");
 
@@ -310,9 +303,9 @@ public class KusariKey
 
             String defaultString = "123456789ABCDEFG";
 
-            String encryptedDefault = Encryption.encrypt(defaultString,defaultString);
+            String obfuscatedDefault = defaultString;
 
-            writer.write(encryptedDefault);
+            writer.write(obfuscatedDefault);
             writer.close();
         }
     }
