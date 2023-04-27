@@ -33,13 +33,14 @@ public class KusariKey
             System.out.println("3. Add Password");
             System.out.println("4. Search");
             System.out.println("5. Replace Value");
+            System.out.println("6. Delete Password");
             System.out.println("Q. Exit");
 
             userInput = input.nextLine();
 
             Core.clearConsole();
 
-           passwords = getPasswords();
+            passwords = getPasswords();
 
             if(userInput.toLowerCase().equals("1") == true)
             {
@@ -93,6 +94,15 @@ public class KusariKey
                 redoPasswords(passwords);
                 passwords = getPasswords();
             }
+            else if(userInput.toLowerCase().equals("6") == true)
+            {
+                System.out.print("Please enter id : ");
+                int id = input.nextInt();
+
+                passwords = delete(passwords, input, id);
+                redoPasswords(passwords);
+                passwords = getPasswords();
+            }
 
             Core.clearConsole();
 
@@ -105,38 +115,54 @@ public class KusariKey
         
     }
 
+//-------------------start-of-delete()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    public static Login[] delete(Login[] passwords, Scanner input, int id) throws Exception
+    {
+        Login[] newPasswords = new Login[passwords.length-1];
+
+        for(int i = 0; i < passwords.length; i++)
+        {
+            if(passwords[i].getID() != id)
+            {
+                newPasswords[i] = passwords[i];
+            }
+        }
+
+        return newPasswords;
+    }
+
 
 //-------------------start-of-search()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-public static void search(Scanner input, Login[] passwords, String term)
-{
-    Core.clearConsole();
-
-    boolean matched = false;
-
-    for(int i = 0; i < passwords.length; i++)
+    public static void search(Scanner input, Login[] passwords, String term)
     {
-        if(passwords[i].getEmail().contains(term) || passwords[i].getLoginName().contains(term) || passwords[i].getPassword().contains(term) || String.valueOf(passwords[i].getID()).contains(term))
+        Core.clearConsole();
+
+        boolean matched = false;
+
+        for(int i = 0; i < passwords.length; i++)
         {
-            System.out.println("-------------------------------------------\n");
+            if(passwords[i].getEmail().contains(term) || passwords[i].getLoginName().contains(term) || passwords[i].getPassword().contains(term) || String.valueOf(passwords[i].getID()).contains(term))
+            {
+                System.out.println("-------------------------------------------\n");
 
-            System.out.println("Login Name : " + passwords[i].getLoginName());
-            System.out.println("Username : " + passwords[i].getEmail());
-            System.out.println("Password : " + passwords[i].getPassword());
-            System.out.println("ID: " + passwords[i].getID());
+                System.out.println("Login Name : " + passwords[i].getLoginName());
+                System.out.println("Username : " + passwords[i].getEmail());
+                System.out.println("Password : " + passwords[i].getPassword());
+                System.out.println("ID: " + passwords[i].getID());
 
-            System.out.println("");
+                System.out.println("");
 
-            matched = true;
+                matched = true;
+            }
         }
-    }
 
-    if (!matched) {
-        System.out.println("No matches found.");
-    }
+        if (!matched) {
+            System.out.println("No matches found.");
+        }
 
-    input.nextLine();
-}
+        input.nextLine();
+    }
 
 //-------------------start-of-replace()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
