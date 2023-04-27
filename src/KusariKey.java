@@ -20,15 +20,7 @@ public class KusariKey
         Scanner reader = new Scanner(passwordFile);
         Scanner input = new Scanner(System.in);
 
-        int lines = 0;
-
-        while (reader.hasNextLine())
-        {
-            lines++;
-            reader.nextLine();
-        }
-
-        Login[] passwords = new Login[lines];
+        Login[] passwords;
 
         Core.clearConsole();
 
@@ -40,27 +32,27 @@ public class KusariKey
             System.out.println("2. Change Master Password");
             System.out.println("3. Add Password");
             System.out.println("4. Search");
+            System.out.println("5. Replace Value");
             System.out.println("Q. Exit");
 
             userInput = input.nextLine();
 
             Core.clearConsole();
 
+           passwords = getPasswords();
+
             if(userInput.toLowerCase().equals("1") == true)
             {
-                getPasswords(passwords,masterPass);
                 viewPasswords(input, passwords, masterPass);
 
             }
             else if(userInput.toLowerCase().equals("2") == true)
             {
-                getPasswords(passwords,masterPass);
                 masterPass = resetMasterPass(input,passwords);
+                redoPasswords(passwords);
             }
             else if(userInput.toLowerCase().equals("3") == true)
             {
-                getPasswords(passwords,masterPass);
-
                 int[] idList = new int[passwords.length];
     
                 System.out.print("Email/Username : ");
@@ -82,13 +74,24 @@ public class KusariKey
 
                 int newID = Core.getNewID(idList);
 
-                addPassword(email, password, loginName, newID, masterPass);
+                addPassword(email, password, loginName, newID);
             }
 
             else if(userInput.toLowerCase().equals("4") == true)
             {
-                getPasswords(passwords,masterPass);
-                search(input, passwords);
+                System.out.print("Please enter search term : ");
+                String term = input.nextLine();
+            
+                search(input, passwords,term);
+            }
+            else if(userInput.toLowerCase().equals("5") == true)
+            {
+                System.out.print("Please enter id : ");
+                int id = input.nextInt();
+
+                replace(passwords, input, id);
+                redoPasswords(passwords);
+                passwords = getPasswords();
             }
 
             Core.clearConsole();
@@ -105,16 +108,15 @@ public class KusariKey
 
 //-------------------start-of-search()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-public static void search(Scanner input, Login[] passwords)
+public static void search(Scanner input, Login[] passwords, String term)
 {
-    System.out.print("Please enter search term : ");
-    String term = input.nextLine();
-
     Core.clearConsole();
+
+    boolean matched = false;
 
     for(int i = 0; i < passwords.length; i++)
     {
-        if(passwords[i].getEmail().equals(term) || passwords[i].getLoginName().equals(term) || passwords[i].getPassword().equals(term) || String.valueOf(passwords[i].getID()).equals(term))
+        if(passwords[i].getEmail().contains(term) || passwords[i].getLoginName().contains(term) || passwords[i].getPassword().contains(term) || String.valueOf(passwords[i].getID()).contains(term))
         {
             System.out.println("-------------------------------------------\n");
 
@@ -124,11 +126,74 @@ public static void search(Scanner input, Login[] passwords)
             System.out.println("ID: " + passwords[i].getID());
 
             System.out.println("");
+
+            matched = true;
         }
     }
 
+    if (!matched) {
+        System.out.println("No matches found.");
+    }
+
     input.nextLine();
-}    
+}
+
+//-------------------start-of-replace()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static void replace(Login[] passwords, Scanner input, int id) throws Exception
+    {
+        int loc = -1;
+
+        for (int i = 0; i < passwords.length; i++) 
+        {
+         if(passwords[i].getID() == id)
+         {
+            System.out.println("-------------------------------------------\n");
+
+            System.out.println("1. Login Name : " + passwords[i].getLoginName());
+            System.out.println("2. Username : " + passwords[i].getEmail());
+            System.out.println("3. Password : " + passwords[i].getPassword());
+            System.out.println("4. ID: " + passwords[i].getID());
+
+            System.out.println("");
+
+            loc = i;
+         }   
+
+        }
+
+        if(loc == -1)
+        {
+            return;
+        }
+
+        System.out.print("\nWhat are you replacing (1-4) : ");
+        int choice = input.nextInt();
+        input.nextLine();
+
+        System.out.print("\nWhat are you replacing it with : ");
+        String term = input.nextLine();
+        Core.clearConsole();
+
+
+        if(choice == 1)
+        {
+            passwords[loc].changeLoginName(term);
+        }
+        else if(choice == 2)
+        {
+            passwords[loc].changeEmail(term);
+        }
+        else if(choice == 3)
+        {
+            passwords[loc].changePassword(term);
+        }
+        else if(choice == 4)
+        {
+            passwords[loc].changeID(Integer.parseInt(term));
+        }
+    }
+
 
 //-------------------start-of-resetMasterPass()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -182,18 +247,29 @@ public static void search(Scanner input, Login[] passwords)
         writer.write(newMasterPass);
         writer.close();
 
-        redoPasswords(actualMasterPass,newMasterPass,passwords);
-
         return newMasterPass;
     }
 
 //-------------------start-of-getPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static void getPasswords(Login[] passwords,String masterPass) throws Exception
+    public static Login[] getPasswords() throws Exception
     {
         File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
 
         Scanner reader = new Scanner(passwordFile);
+
+        int lines = 0;
+
+        while (reader.hasNextLine())
+        {
+            lines++;
+            reader.nextLine();
+        }
+
+        reader.close();
+        reader = new Scanner(passwordFile);
+
+        Login[] passwords = new Login[lines];
 
         for(int i = 0; i < passwords.length; i++)
         {
@@ -201,6 +277,8 @@ public static void search(Scanner input, Login[] passwords)
         }
 
         reader.close();
+
+        return passwords;
     }
 //-------------------start-of-login()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -223,6 +301,11 @@ public static void search(Scanner input, Login[] passwords)
                 userMasterPass = input.nextLine();
 
                 Core.clearConsole();
+
+                if(userMasterPass.equals("q"))
+                {
+                    System.exit(0);
+                }
 
             }
 
@@ -268,23 +351,28 @@ public static void search(Scanner input, Login[] passwords)
     }
 //-------------------start-of-redoPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static void redoPasswords(String oldMasterPass, String newMasterPass,Login[] passwords) throws Exception
+    public static void redoPasswords(Login[] passwords) throws Exception
     {
         File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+
+        Scanner reader = new Scanner(passwordFile);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile));
         writer.close();
 
         for(int i = 0; i < passwords.length; i++)
         {
-            addPassword(passwords[i].getEmail(), passwords[i].getPassword(),  passwords[i].getLoginName(), passwords[i].getID(), newMasterPass);
+            addPassword(passwords[i].getEmail(), passwords[i].getPassword(),  passwords[i].getLoginName(), passwords[i].getID());
         }
+
+        reader.close();
 
     }
 
+
 //-------------------start-of-addPassword()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static void addPassword(String email, String password, String loginName, int id, String masterPass) throws Exception
+    public static void addPassword(String email, String password, String loginName, int id) throws Exception
     {
         File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile,true));
