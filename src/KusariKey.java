@@ -12,7 +12,6 @@ public class KusariKey
 
         Core.clearConsole();
 
-        String masterPass;
         String userInput= "L";
 
         File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
@@ -24,7 +23,7 @@ public class KusariKey
 
         Core.clearConsole();
 
-        masterPass = logon(input);
+        logon(input);
 
         while(!userInput.toLowerCase().equals("q"))
         {
@@ -44,12 +43,12 @@ public class KusariKey
 
             if(userInput.toLowerCase().equals("1") == true)
             {
-                viewPasswords(input, passwords, masterPass);
+                viewPasswords(input, passwords);
 
             }
             else if(userInput.toLowerCase().equals("2") == true)
             {
-                masterPass = resetMasterPass(input,passwords);
+                resetMasterPass(input);
                 redoPasswords(passwords);
             }
             else if(userInput.toLowerCase().equals("3") == true)
@@ -116,6 +115,15 @@ public class KusariKey
     }
 
 //-------------------start-of-delete()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /**
+    * deletes a login
+    * @param passwords array - holds current logins
+    * @param input scanner - reads input from console
+    * @param id int -  id of the login whose value we are replacing
+    * @return newPasswords array - holds updated logins
+    * @throws Exception
+    */ 
+
     public static Login[] delete(Login[] passwords, Scanner input, int id) throws Exception
     {
         Login[] newPasswords = new Login[passwords.length-1];
@@ -133,8 +141,17 @@ public class KusariKey
 
 
 //-------------------start-of-search()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+    /**
+    * replaces a value in the passwords array
+    * @param input scanner - reads input from console
+    * @param passwords array - holds current logins
+    * @param term String -  term that is being searched for
+    * @return None
+    * @throws Exception
+    */ 
 
-    public static void search(Scanner input, Login[] passwords, String term)
+    public static void search(Scanner input, Login[] passwords, String term) throws Exception
     {
         Core.clearConsole();
 
@@ -165,6 +182,15 @@ public class KusariKey
     }
 
 //-------------------start-of-replace()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+    /**
+    * replaces a value in the passwords array
+    * @param passwords array - holds current logins
+    * @param input scanner - reads input from console
+    * @param id int -  id of the login whose value we are replacing
+    * @return None
+    * @throws Exception
+    */ 
 
     public static void replace(Login[] passwords, Scanner input, int id) throws Exception
     {
@@ -222,61 +248,55 @@ public class KusariKey
 
 
 //-------------------start-of-resetMasterPass()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /**
+    * resets the master password
+    * @param input scanner - reads input from console
+    * @return None
+    * @throws Exception
+    */
 
-    public static String resetMasterPass(Scanner input, Login[] passwords) throws Exception
+    public static void resetMasterPass(Scanner input) throws Exception
     {
-        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
+        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt"); // where the master password for KusariKey is stored
 
         String userMasterPass = "L";
         String actualMasterPass = "W";
         String newMasterPass = "K";
 
+        Scanner reader = new Scanner(masterPassFile);
+
         while(!userMasterPass.equals(actualMasterPass))
         {
-            Scanner reader = new Scanner(masterPassFile);
+            System.out.println("Please enter the master password to reset your master password (Default is 123456789ABCDEFG)");
 
-            while(userMasterPass.length() != 16)
-            {
-    
-                System.out.println("Please enter the master password to reset your master password (Default is 123456789ABCDEFG)");
- 
-                userMasterPass = input.nextLine();
-
-                Core.clearConsole();
-
-            }
-            
-            try
-            {
-                actualMasterPass = reader.nextLine();
-            }
-            catch(Exception e)
-            {
-                userMasterPass = "";
-                reader.close();
-            }
-
+            userMasterPass = input.nextLine();
+            actualMasterPass = reader.nextLine();
             Core.clearConsole();
+
+            reader.close();
+            reader = new Scanner(masterPassFile);
         
         }
 
-        while(newMasterPass.length() != 16)
-        {
+        newMasterPass = Core.userConfirm("Please enter a new master password : ", input);
 
-            newMasterPass = Core.userConfirm("Please enter a new master password (Please note a password must be 16 characters)", input);
-
-            Core.clearConsole();
-
-        }
+        Core.clearConsole();
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(masterPassFile));
         writer.write(newMasterPass);
         writer.close();
 
-        return newMasterPass;
+        reader.close();
+
     }
 
 //-------------------start-of-getPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /**
+    * gets the updated passwords from the passwords.txt file
+    * @param None
+    * @return passwords array of updated passwords
+    * @throws Exception
+    */
 
     public static Login[] getPasswords() throws Exception
     {
@@ -306,11 +326,17 @@ public class KusariKey
 
         return passwords;
     }
-//-------------------start-of-login()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------start-of-logon()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static String logon(Scanner input) throws Exception
+    /**
+     * logons on to KusariKey
+     * @param input scanner - reads input from console
+     * @throws Exception
+     */
+
+    public static void logon(Scanner input) throws Exception
     {
-        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
+        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt"); // where the master password for KusariKey is stored
 
         String userMasterPass = "L";
         String actualMasterPass = "W";
@@ -319,45 +345,38 @@ public class KusariKey
 
         while(!userMasterPass.equals(actualMasterPass) )
         {
+            System.out.println("Welcome to KusariKey, Please enter the master password to continue (Default is 123456789ABCDEFG)");
 
-            while(userMasterPass.length() != 16)
-            {
-                System.out.println("Welcome to KusariKey, Please enter the master password to continue (Default is 123456789ABCDEFG)");
-
-                userMasterPass = input.nextLine();
-
-                Core.clearConsole();
-
-                if(userMasterPass.equals("q"))
-                {
-                    System.exit(0);
-                }
-
-            }
-
-            try
-            {
-                actualMasterPass = reader.nextLine();
-            } 
-            catch (Exception e) 
-            {
-                userMasterPass = "F";
-            }
-
+            userMasterPass = input.nextLine();
+            actualMasterPass = reader.nextLine();
 
             Core.clearConsole();
+
+            if(userMasterPass.equals("q"))
+            {
+                System.exit(0);
+            }
+
+            reader.close();
+            reader = new Scanner(masterPassFile);
         
         }
 
         reader.close();
         
-        return actualMasterPass;
-
     }
 
 //-------------------start-of-viewPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public static void viewPasswords(Scanner input,Login[] passwords,String masterPass) throws Exception
+    /**
+     * prints the passwords currently in the passwords array
+     * @param input scanner - reads input from console
+     * @param passwords Login[] - array of the current logins
+     * @return Nothing
+     * @throws Exception
+     */
+
+    public static void viewPasswords(Scanner input,Login[] passwords) throws Exception
     {
 
         for(int i = 0; i < passwords.length; i++)
@@ -377,13 +396,20 @@ public class KusariKey
     }
 //-------------------start-of-redoPasswords()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+    * updates the passwords in the passwords.txt to match the passwords array
+    * @param Login[] array - an array of the current 'Logins' 
+    * @return Nothing
+    * @throws Exception
+    */
+
     public static void redoPasswords(Login[] passwords) throws Exception
     {
-        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt"); // where passwords for KusariKey are stored
 
         Scanner reader = new Scanner(passwordFile);
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile)); // clears the txt file
         writer.close();
 
         for(int i = 0; i < passwords.length; i++)
@@ -395,12 +421,22 @@ public class KusariKey
 
     }
 
-
 //-------------------start-of-addPassword()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+    * Adds a password to the passwords.txt document
+    * @param email string - email or username 
+    * @param password string - password for login
+    * @param loginName string - name for the login, where the login is used
+    * @param id int - tag/id for the login, used for replacing/deleting/etc
+    * @return Nothing
+    * @throws Exception
+    */
 
     public static void addPassword(String email, String password, String loginName, int id) throws Exception
     {
-        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt"); // where passwords for KusariKey are stored
+    
         BufferedWriter writer = new BufferedWriter(new FileWriter(passwordFile,true));
 
         writer.write(email + " " + password +  " "  + id  + " " + loginName + '\n');
@@ -410,13 +446,19 @@ public class KusariKey
     }
 
 //-------------------start-of-setup()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+    /**
+    * Sets up files that KusariKey needs to run
+    * @param Nothing
+    * @return Nothing
+    * @throws Exception
+    */
 
     public static void setup() throws Exception
     {
-
-        File directory = new File("C:\\ProgramData\\KusariKey\\");
-        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt");
-        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt");
+        File directory = new File("C:\\ProgramData\\KusariKey\\"); // directory for KusariKey
+        File masterPassFile = new File("C:\\ProgramData\\KusariKey\\masterPass.txt"); // where the master password for KusariKey is stored
+        File passwordFile = new File("C:\\ProgramData\\KusariKey\\passwords.txt"); // where passwords for KusariKey are stored
     
         if (!directory.exists()) 
         {
@@ -439,9 +481,7 @@ public class KusariKey
 
             String defaultString = "123456789ABCDEFG";
 
-            String obfuscatedDefault = defaultString;
-
-            writer.write(obfuscatedDefault);
+            writer.write(defaultString);
             writer.close();
         }
     }
