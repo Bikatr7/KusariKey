@@ -7,33 +7,48 @@ public class Core
 {
 
 //--------------------Start-of-getNewID()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+    /**
+    * Gets a new id for a new login
+    * @param idList int[] - holds all the existing ids
+    * @return newID int - the new id returned
+    * @throws Exception
+    */
 
     public static int getNewID(int [] idList)
     {
         
-        int expectedNum = 0;
+        int newID = 1;
     
         for(int i = 0; i < idList.length; i++)
         {
-            if(idList[i] < expectedNum)
+            if(idList[i] < newID)
             {
                 continue;
             }
-            else if(idList[i] == expectedNum)
+            else if(idList[i] == newID)
             {
-                expectedNum += 1;
+                newID += 1;
             }
             else
             {
-                return expectedNum;
+                return newID;
             }
             
         }
 
-        return expectedNum;
+        return newID;
     }
 
 //-------------------start-of-userConfirm()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+    * Confirms user input
+    * @param prompt String - the message we are prompting the user with
+    * @param input Scanner - reads console input
+    * @return userInput String - the user's input
+    * @throws Exception
+    */
 
     public static String userConfirm(String prompt, Scanner input)
     {
@@ -83,6 +98,12 @@ public class Core
 
     
 //-------------------start-of-clearConsole()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+    /**
+    * clears the console
+    * @param  None
+    * @return None
+    */
 
     public static void clearConsole() 
     {

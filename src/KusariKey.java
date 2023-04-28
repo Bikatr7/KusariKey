@@ -117,10 +117,10 @@ public class KusariKey
 //-------------------start-of-delete()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
     * deletes a login
-    * @param passwords array - holds current logins
+    * @param passwords Login[] - holds current logins
     * @param input scanner - reads input from console
     * @param id int -  id of the login whose value we are replacing
-    * @return newPasswords array - holds updated logins
+    * @return newPasswords Login[] - holds updated logins
     * @throws Exception
     */ 
 
@@ -143,9 +143,9 @@ public class KusariKey
 //-------------------start-of-search()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    
     /**
-    * replaces a value in the passwords array
+    * searches for a term
     * @param input scanner - reads input from console
-    * @param passwords array - holds current logins
+    * @param passwords Login[] - holds current logins
     * @param term String -  term that is being searched for
     * @return None
     * @throws Exception
@@ -185,7 +185,7 @@ public class KusariKey
   
     /**
     * replaces a value in the passwords array
-    * @param passwords array - holds current logins
+    * @param passwords Login[] - holds current logins
     * @param input scanner - reads input from console
     * @param id int -  id of the login whose value we are replacing
     * @return None
@@ -294,7 +294,7 @@ public class KusariKey
     /**
     * gets the updated passwords from the passwords.txt file
     * @param None
-    * @return passwords array of updated passwords
+    * @return passwords Login[] - of updated passwords
     * @throws Exception
     */
 
@@ -398,7 +398,7 @@ public class KusariKey
 
     /**
     * updates the passwords in the passwords.txt to match the passwords array
-    * @param Login[] array - an array of the current 'Logins' 
+    * @param passwords Login[] - an array of the current 'Logins' 
     * @return Nothing
     * @throws Exception
     */
