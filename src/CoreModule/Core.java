@@ -18,7 +18,7 @@ public class Core
     public static int getNewID(int [] idList)
     {
         
-        int newID = 0;
+        int newID = 1;
     
         for(int i = 0; i < idList.length; i++)
         {
