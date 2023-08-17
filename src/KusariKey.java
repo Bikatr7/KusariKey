@@ -126,20 +126,22 @@ public class KusariKey
 
     public static Login[] delete(Login[] passwords, Scanner input, int id) throws Exception
     {
-        Login[] newPasswords = new Login[passwords.length-1];
-
-        for(int i = 0; i < passwords.length; i++)
+        Login[] newPasswords = new Login[passwords.length - 1];
+    
+        int newIndex = 0;
+    
+        for (int i = 0; i < passwords.length; i++)
         {
-            if(passwords[i].getID() != id)
+            if (passwords[i].getID() != id)
             {
-                newPasswords[i] = passwords[i];
+                newPasswords[newIndex] = passwords[i];
+                newIndex++;
             }
         }
-
+    
         return newPasswords;
     }
-
-
+    
 //-------------------start-of-search()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
    
     /**
