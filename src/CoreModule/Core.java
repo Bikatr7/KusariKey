@@ -17,6 +17,7 @@ public class Core
 
     public static int getNewID(int [] idList)
     {
+        Arrays.sort(idList);
         
         int newID = 1;
     
