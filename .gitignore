@@ -1,7 +1,10 @@
 ## Gradle
 .gradle/
 /build/
-
+settings.gradle
+gradlew.bat
+build.gradle
+gradlew
 
 ## Visual Studio Code
 .vscode/
@@ -16,4 +19,3 @@ gradle-wrapper.properties
 
 ## git
 .gitattributes
-.gitignore
