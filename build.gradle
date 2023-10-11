@@ -1,0 +1,14 @@
+plugins {
+    id 'application'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+application {
+    mainClassName = 'KusariKey'
+}
