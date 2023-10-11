@@ -1,18 +1,19 @@
-# Gradle
+## Gradle
 .gradle/
 /build/
 
-# IntelliJ IDEA
-.idea/
 
-# Visual Studio Code
+## Visual Studio Code
 .vscode/
 
-# Compiled Java class files
+## Compiled Java class files
 /bin/
 /out/
 
-# Gradle wrapper files
+## Gradle wrapper files
 gradle-wrapper.jar
 gradle-wrapper.properties
+
+## git
 .gitattributes
+.gitignore
