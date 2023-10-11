@@ -2,6 +2,8 @@ import java.util.*;
 import java.io.*;
 
 import CoreModule.*;
+import Entities.Login;
+import Handlers.*;
 
 public class KusariKey 
 {
@@ -250,6 +252,7 @@ public class KusariKey
 
 
 //-------------------start-of-resetMasterPass()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
     /**
     * resets the master password
     * @param input scanner - reads input from console
