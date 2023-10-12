@@ -14,6 +14,7 @@ public class logger
 {
 
     private String batch;
+    private Path logPath;
     private FileWriter logWriter;
 
 //-------------------start-of-logger()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,9 +22,10 @@ public class logger
     public logger(Path logPath) throws IOException
     {
         
-        batch = "";
+        this.batch = "";
+        this.logPath = logPath;
 
-        logWriter = new FileWriter(logPath.toString(), true);
+        this.logWriter = new FileWriter(logPath.toString(), true);
         
     }
 
@@ -83,6 +85,32 @@ public class logger
 
         batch = "";
 
+    }
+
+//-------------------start-of-clearLogFile()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Clears the log file
+     * @param void
+     * @return None
+     */
+
+    public void clearLogFile()
+    {
+        try
+        {
+            logWriter.close();
+
+            // Re-open in non-append mode (truncate file) and close
+            try (FileWriter truncateWriter = new FileWriter(logPath.toString(), false)) {}
+
+            // reopen it for usage
+            logWriter = new FileWriter(logPath.toString(), true);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: " + e);
+        }
     }
 }
 
