@@ -1,7 +1,9 @@
 import java.util.*;
+
+import Core.*;
+
 import java.io.*;
 
-import CoreModule.*;
 import Entities.Login;
 import Handlers.*;
 
@@ -331,6 +333,7 @@ public class KusariKey
 
         return passwords;
     }
+
 //-------------------start-of-logon()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -348,7 +351,7 @@ public class KusariKey
 
         Scanner reader = new Scanner(masterPassFile);
 
-        while(!userMasterPass.equals(actualMasterPass) )
+        while(!userMasterPass.equals(actualMasterPass))
         {
             System.out.println("Welcome to KusariKey, Please enter the master password to continue (Default is 123456789ABCDEFG)");
 

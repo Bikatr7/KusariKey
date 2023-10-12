@@ -1,4 +1,4 @@
-package CoreModule;
+package Core;
 
 import java.io.*;
 import java.util.*;
