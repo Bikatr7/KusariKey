@@ -5,20 +5,25 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 //-------------------start-of-logger---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class logger 
 {
 
     private String batch;
-    private Path logPath;
+    private FileWriter logWriter;
 
 //-------------------start-of-logger()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  
-    public logger(Path logPath)
+    public logger(Path logPath) throws IOException
     {
-        this.logPath = logPath;
-        this.batch = "";
+        
+        batch = "";
+
+        logWriter = new FileWriter(logPath.toString(), true);
         
     }
 
@@ -26,7 +31,7 @@ public class logger
 
     /**
      * Gets the current timestamp for an action to be logged
-     * @param None
+     * @param void
      * @return formattedDateTime - String
      */
 
@@ -40,6 +45,44 @@ public class logger
         String formattedDateTime = "[" + now.format(formatter) + "]";
         
         return formattedDateTime;
+    }
+
+//-------------------start-of-logAction()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Logs an action to the batch
+     * @param action - String
+     * @return None
+     */
+
+    public void logAction(String action)
+    {
+        batch += getTimestamp() + " " + action + "\n";
+    }
+
+//-------------------start-of-pushBatch()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Pushes the batch to the log file
+     * @param void
+     * @return None
+     */
+
+    public void pushBatch()
+    {
+
+        try
+        {
+            logWriter.write(batch);
+            logWriter.flush();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: " + e);
+        }
+
+        batch = "";
+
     }
 }
 
