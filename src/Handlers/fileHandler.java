@@ -24,6 +24,41 @@ public class fileHandler
         
     }
 
+//-------------------start-of-standardCreateDirectory()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates a directory if it doesn't exist. Also logs the action.
+     * @param directoryPath
+     * @throws IOException
+     */
+
+    public void standardCreateDirectory(Path directoryPath) throws IOException
+    {
+        if(!directoryPath.toFile().exists())
+        {
+            directoryPath.toFile().mkdirs();
+            logger.logAction(directoryPath.toString() + " was created due to the lack of it's existence.");
+        }
+    }
+
+
+//-------------------start-of-standardCreateFile()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates a file if it doesn't exist. Also logs the action.
+     * @param filePath
+     * @throws IOException
+     */
+
+    public void standardCreateFile(Path filePath) throws IOException
+    {
+        if(!filePath.toFile().exists())
+        {
+            filePath.toFile().createNewFile();
+            logger.logAction(filePath.toString() + " was created due to the lack of it's existence.");
+        }
+    }
+
 //-------------------start-of-switchToFile()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
