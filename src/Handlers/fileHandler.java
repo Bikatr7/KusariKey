@@ -59,6 +59,23 @@ public class fileHandler
         }
     }
 
+//-------------------start-of-modifiedCreateFile()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates a file if it doesn't exist or if the file is blank. Also logs the action.
+     * @param filePath
+     * @throws IOException
+     */
+
+    public void modifiedCreateFile(Path filePath) throws IOException
+    {
+        if(!filePath.toFile().exists() || filePath.toFile().length() == 0)
+        {
+            filePath.toFile().createNewFile();
+            logger.logAction(filePath.toString() + " was created due to the lack of it's existence.");
+        }
+    }
+
 //-------------------start-of-switchToFile()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
