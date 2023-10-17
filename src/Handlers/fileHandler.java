@@ -160,6 +160,7 @@ public class fileHandler
 
     /**
      * Edits a line in the current file.
+     * Current path is not altered.
      * @param path_to_write_to Path - The path of the file to write to.
      * @param target_line int - The line to edit.
      * @param column_number int - The column to edit.
@@ -171,12 +172,29 @@ public class fileHandler
     public <E> void editSeiLine(Path path_to_write_to, int target_line, int column_number, E value_to_replace_to) throws IOException
     {
 
-        Path oldPath = currentFilePath;
         ArrayList<String> lines = new ArrayList<String>();
+
+        String line_to_edit = "";
+
+        String [] items;
 
         switchToFile(path_to_write_to);
 
         lines = (ArrayList<String>) Files.readAllLines(path_to_write_to, java.nio.charset.StandardCharsets.UTF_8);
+
+        line_to_edit = lines.get(target_line - 1);
+        items = line_to_edit.split(",");
+
+        items[column_number - 1] = value_to_replace_to.toString();
+
+        for(String item : items)
+        {
+            line_to_edit += item + ",";
+        }
+
+        lines.set(target_line - 1, line_to_edit);
+
+        Files.write(path_to_write_to, lines, java.nio.charset.StandardCharsets.UTF_8);
 
     }
 
