@@ -1,9 +1,13 @@
 package Handlers;
 
 import java.nio.file.Path;
+import java.nio.file.Files;
 
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.util.Scanner;
+import java.util.ArrayList;
 
 import Modules.logger;
 
@@ -12,7 +16,9 @@ import Modules.logger;
 public class fileHandler 
 {
     private Path currentFilePath;
+
     private FileWriter writer;
+    private Scanner reader;
 
     private logger logger;
 
@@ -109,7 +115,14 @@ public class fileHandler
             writer.close();
         }
 
+        if(reader != null)
+        {
+            reader.close();
+        }
+
+        reader = new Scanner(currentFilePath);
         writer = new FileWriter(currentFilePath.toString(), true);
+
         logger.logAction("Switched to file: " + currentFilePath.toString());
     }
 
@@ -157,6 +170,13 @@ public class fileHandler
 
     public <E> void editSeiLine(Path path_to_write_to, int target_line, int column_number, E value_to_replace_to) throws IOException
     {
+
+        Path oldPath = currentFilePath;
+        ArrayList<String> lines = new ArrayList<String>();
+
+        switchToFile(path_to_write_to);
+
+        lines = (ArrayList<String>) Files.readAllLines(path_to_write_to, java.nio.charset.StandardCharsets.UTF_8);
 
     }
 
