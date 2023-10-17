@@ -2,6 +2,8 @@ package Handlers;
 
 import java.nio.file.Path;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -24,11 +26,23 @@ public class fileHandler
         
     }
 
+//-------------------start-of-getCurrentFilePath()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Returns the current file path.
+     * @return currentFIlePath Path - The current file path.
+     */
+
+    public Path getCurrentFilePath()
+    {
+        return currentFilePath;
+    }
+
 //-------------------start-of-standardCreateDirectory()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Creates a directory if it doesn't exist. Also logs the action.
-     * @param directoryPath
+     * @param directoryPath Path - The path of the directory to create.
      * @throws IOException
      */
 
@@ -80,7 +94,7 @@ public class fileHandler
 
     /**
      * Switches the current file to the file specified by the filePath parameter.
-     * @param filePath
+     * @param filePath 
      * @throws IOException
      */
 
@@ -96,4 +110,28 @@ public class fileHandler
         writer = new FileWriter(currentFilePath.toString(), true);
         logger.logAction("Switched to file: " + currentFilePath.toString());
     }
+
+
+//-------------------start-of-writeSeiLine()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Writes a line to the current file.
+     * Current path is switched back to the previous file after the line is written.
+     * @param file_path Path - The path of the file to write to.
+     * @param items_to_write E[] - The items to write to the file.
+     * @throws IOException
+     */
+
+    public <E> void writeSeiLine(Path file_path, E[] items_to_write) throws IOException
+    {
+        String line_to_write = "";
+
+        for(E item : items_to_write)
+        {
+            line_to_write += item.toString() + ",";
+        }
+
+
+    }
+
 }
