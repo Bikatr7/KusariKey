@@ -2,8 +2,6 @@ package Handlers;
 
 import java.nio.file.Path;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -60,7 +58,7 @@ public class fileHandler
 
     /**
      * Creates a file if it doesn't exist. Also logs the action.
-     * @param filePath
+     * @param filePath Path - The path of the file to create.
      * @throws IOException
      */
 
@@ -77,7 +75,7 @@ public class fileHandler
 
     /**
      * Creates a file if it doesn't exist or if the file is blank. Also logs the action.
-     * @param filePath
+     * @param filePath Path - The path of the file to create.
      * @throws IOException
      */
 
@@ -94,7 +92,7 @@ public class fileHandler
 
     /**
      * Switches the current file to the file specified by the filePath parameter.
-     * @param filePath 
+     * @param filePath  Path - The path of the file to switch to.
      * @throws IOException
      */
 
@@ -117,20 +115,26 @@ public class fileHandler
     /**
      * Writes a line to the current file.
      * Current path is switched back to the previous file after the line is written.
-     * @param file_path Path - The path of the file to write to.
+     * @param path_to_write_to Path - The path of the file to write to.
      * @param items_to_write E[] - The items to write to the file.
      * @throws IOException
      */
 
-    public <E> void writeSeiLine(Path file_path, E[] items_to_write) throws IOException
+    public <E> void writeSeiLine(Path path_to_write_to, E[] items_to_write) throws IOException
     {
         String line_to_write = "";
+        Path oldPath = currentFilePath;
 
         for(E item : items_to_write)
         {
             line_to_write += item.toString() + ",";
         }
 
+        switchToFile(path_to_write_to);
+
+        writer.write(line_to_write + "\n");
+
+        switchToFile(oldPath);
 
     }
 
