@@ -41,6 +41,7 @@ public class fileHandler
     /**
      * Creates a directory if it doesn't exist. Also logs the action.
      * @param directoryPath Path - The path of the directory to create.
+     * @return void
      * @throws IOException
      */
 
@@ -59,6 +60,7 @@ public class fileHandler
     /**
      * Creates a file if it doesn't exist. Also logs the action.
      * @param filePath Path - The path of the file to create.
+     * @return void
      * @throws IOException
      */
 
@@ -76,6 +78,7 @@ public class fileHandler
     /**
      * Creates a file if it doesn't exist or if the file is blank. Also logs the action.
      * @param filePath Path - The path of the file to create.
+     * @return void
      * @throws IOException
      */
 
@@ -93,6 +96,7 @@ public class fileHandler
     /**
      * Switches the current file to the file specified by the filePath parameter.
      * @param filePath  Path - The path of the file to switch to.
+     * @return void
      * @throws IOException
      */
 
@@ -117,6 +121,7 @@ public class fileHandler
      * Current path is switched back to the previous file after the line is written.
      * @param path_to_write_to Path - The path of the file to write to.
      * @param items_to_write E[] - The items to write to the file.
+     * @return void
      * @throws IOException
      */
 
@@ -138,4 +143,21 @@ public class fileHandler
 
     }
 
-}
+//-------------------start-of-editSeiLine()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Edits a line in the current file.
+     * @param path_to_write_to Path - The path of the file to write to.
+     * @param target_line int - The line to edit.
+     * @param column_number int - The column to edit.
+     * @param value_to_replace_to E - The value to replace the current value with.
+     * @return void
+     * @throws IOException
+     */
+
+    public <E> void editSeiLine(Path path_to_write_to, int target_line, int column_number, E value_to_replace_to) throws IOException
+    {
+
+    }
+
+} // end-of-fileHandler
