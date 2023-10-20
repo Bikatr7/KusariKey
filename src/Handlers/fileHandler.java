@@ -178,8 +178,6 @@ public class fileHandler
 
         String [] items;
 
-        switchToFile(path_to_write_to);
-
         lines = (ArrayList<String>) Files.readAllLines(path_to_write_to, java.nio.charset.StandardCharsets.UTF_8);
 
         line_to_edit = lines.get(target_line - 1);
@@ -197,5 +195,29 @@ public class fileHandler
         Files.write(path_to_write_to, lines, java.nio.charset.StandardCharsets.UTF_8);
 
     }
+
+//-------------------start-of-readSeiLine()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Reads from a file.
+     * @param path_to_read_from Path - The path of the file to read from.
+     * @param target_line int - The line to read.
+     * @param column int - The column to read.
+     * @return String - The value of the item in the specified column.
+     * @throws IOException
+     */
+
+    public String readSeiLine(Path path_to_read_from, int target_line, int column) throws IOException
+    {
+        String line_to_read = "";
+
+        String [] items;
+
+        line_to_read = Files.readAllLines(path_to_read_from, java.nio.charset.StandardCharsets.UTF_8).get(target_line - 1);
+        items = line_to_read.split(",");
+
+        return items[column - 1];
+    }
+
 
 } // end-of-fileHandler
