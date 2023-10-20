@@ -1,5 +1,6 @@
 package Handlers;
 
+// built-in libraries
 import java.nio.file.Path;
 import java.nio.file.Files;
 
@@ -9,6 +10,9 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import java.util.Arrays;
+
+// custom modules
 import Modules.logger;
 
 //-------------------start-of-fileHandler---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -240,6 +244,47 @@ public class fileHandler
         lines.remove(target_line - 1);
 
         Files.write(path_to_delete_from, lines, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+//-------------------start-of-deleteAllOccurrencesOfID()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Deletes all lines with a specified ID.
+     * Current path is not altered.
+     * @param path_to_delete_from Path - The path of the file to delete from.
+     * @param idIndex int - The index of the ID column.
+     * @param id int - The ID to delete.
+     * @return void
+     * @throws IOException
+     */
+
+    public void deleteAllOccurrencesOfID(Path path_to_delete_from, int idIndex, int id) throws IOException
+    {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        lines = (ArrayList<String>) Files.readAllLines(path_to_delete_from, java.nio.charset.StandardCharsets.UTF_8);
+
+        for(int i = 0; i < lines.size(); i++)
+        {
+            if(Integer.parseInt(lines.get(i).split(",")[idIndex]) == id)
+            {
+                lines.remove(i);
+                i--;
+            }
+        }
+
+        Files.write(path_to_delete_from, lines, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+//-------------------start-of-getNewID()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public int getNewID(int[] existingIDs)
+    {
+        int newID = 1;
+
+        Arrays.sort(existingIDs);
+
+        return newID;
     }
 
 
