@@ -76,7 +76,7 @@ public class fileHandler
 
     public void standardCreateFile(Path filePath) throws IOException
     {
-        if(!filePath.toFile().exists())
+        if(Files.notExists(filePath))
         {
             filePath.toFile().createNewFile();
             logger.logAction(filePath.toString() + " was created due to the lack of it's existence.");
@@ -94,7 +94,7 @@ public class fileHandler
 
     public void modifiedCreateFile(Path filePath) throws IOException
     {
-        if(!filePath.toFile().exists() || filePath.toFile().length() == 0)
+        if(Files.notExists(filePath) || filePath.toFile().length() == 0)
         {
             filePath.toFile().createNewFile();
             logger.logAction(filePath.toString() + " was created due to the lack of it's existence.");
@@ -178,7 +178,7 @@ public class fileHandler
 
         ArrayList<String> lines = new ArrayList<String>();
 
-        String line_to_edit = "";
+        String line_to_edit;
 
         String [] items;
 
@@ -188,6 +188,8 @@ public class fileHandler
         items = line_to_edit.split(",");
 
         items[column_number - 1] = value_to_replace_to.toString();
+
+        line_to_edit = "";
 
         for(String item : items)
         {
