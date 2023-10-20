@@ -200,6 +200,7 @@ public class fileHandler
 
     /**
      * Reads from a file.
+     * Current path is not altered.
      * @param path_to_read_from Path - The path of the file to read from.
      * @param target_line int - The line to read.
      * @param column int - The column to read.
@@ -217,6 +218,28 @@ public class fileHandler
         items = line_to_read.split(",");
 
         return items[column - 1];
+    }
+
+//-------------------start-of-deleteSeiLine()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Deletes a line from a file.
+     * Current path is not altered.
+     * @param path_to_delete_from Path - The path of the file to delete from.
+     * @param target_line int - The line to delete.
+     * @return void
+     * @throws IOException
+     */
+
+    public void deleteSeiLine(Path path_to_delete_from, int target_line) throws IOException
+    {
+        ArrayList<String> lines = new ArrayList<String>();
+
+        lines = (ArrayList<String>) Files.readAllLines(path_to_delete_from, java.nio.charset.StandardCharsets.UTF_8);
+
+        lines.remove(target_line - 1);
+
+        Files.write(path_to_delete_from, lines, java.nio.charset.StandardCharsets.UTF_8);
     }
 
 
