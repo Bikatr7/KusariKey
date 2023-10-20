@@ -284,6 +284,22 @@ public class fileHandler
 
         Arrays.sort(existingIDs);
 
+        for(int id : existingIDs)
+        {
+            if(id < newID)
+            {
+                continue;
+            }
+            else if(id == newID)
+            {
+                newID++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
         return newID;
     }
 
