@@ -18,6 +18,7 @@ public class connectionHandler
     private Connection initializeDatabaseConnection()
     {
         Connection fauxConnection = null;
+        
 
         return fauxConnection;
     }
