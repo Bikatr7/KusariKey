@@ -19,7 +19,6 @@ public class ConnectionHandler
     {
         Connection fauxConnection = null;
         
-
         return fauxConnection;
     }
 }
