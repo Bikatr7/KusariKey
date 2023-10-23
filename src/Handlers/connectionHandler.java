@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class connectionHandler 
+public class ConnectionHandler 
 {
 
     private Connection connection;
 
-    public connectionHandler()
+    public ConnectionHandler()
     {
         this.connection = initializeDatabaseConnection();
     }

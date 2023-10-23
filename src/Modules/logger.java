@@ -10,7 +10,7 @@ import java.io.IOException;
 
 //-------------------start-of-logger---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-public class logger 
+public class Logger 
 {
 
     private String batch;
@@ -19,7 +19,7 @@ public class logger
 
 //-------------------start-of-logger()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  
-    public logger(Path logPath) throws IOException
+    public Logger(Path logPath) throws IOException
     {
         
         this.batch = "";

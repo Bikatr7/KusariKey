@@ -7,11 +7,11 @@ import java.nio.file.Files;
 import java.io.IOException;
 
 // custom modules
-import Handlers.fileHandler;
+import Handlers.FileHandler;
 
 //--------------------start-of-fileEnsurer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-public class fileEnsurer 
+public class FileEnsurer 
 {
     private Path configDir;
     private Path credentialsDir;
@@ -19,13 +19,13 @@ public class fileEnsurer
 
     private Path logFile;
 
-    private logger logger;
+    private Logger logger;
 
-    private fileHandler fileHandler; 
+    private FileHandler fileHandler; 
 
 //--------------------start-of-fileEnsurer()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public fileEnsurer()
+    public FileEnsurer()
     {
 
         String userHome = System.getProperty("user.home");
@@ -36,14 +36,14 @@ public class fileEnsurer
 
         try 
         {
-            logger = new logger(logFile);
+            logger = new Logger(logFile);
         } 
         catch (IOException e) 
         {
            System.exit(0);
         }
 
-        fileHandler = new fileHandler(logger);
+        fileHandler = new FileHandler(logger);
 
         setupBaseDirectories();
 

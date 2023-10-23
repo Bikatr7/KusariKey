@@ -1,4 +1,5 @@
 package Entities;
+
 public class Login
 {
     private String email;

@@ -11,22 +11,22 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 // custom modules
-import Modules.logger;
+import Modules.Logger;
 
 //-------------------start-of-fileHandler---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-public class fileHandler 
+public class FileHandler 
 {
     private Path currentFilePath;
 
     private FileWriter writer;
     private Scanner reader;
 
-    private logger logger;
+    private Logger logger;
 
 //-------------------start-of-fileHandler()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public fileHandler(logger logger)
+    public FileHandler(Logger logger)
     {
         this.logger = logger;
         

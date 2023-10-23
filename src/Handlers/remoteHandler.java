@@ -1,14 +1,14 @@
 package Handlers;
 
 // custom modules
-import Handlers.connectionHandler;
+import Handlers.ConnectionHandler;
 
-public class remoteHandler 
+public class RemoteHandler 
 {
 
-    public remoteHandler() 
+    public RemoteHandler() 
     {
-        connectionHandler connectionHandler = new connectionHandler();
+        ConnectionHandler connectionHandler = new ConnectionHandler();
 
     }
 
