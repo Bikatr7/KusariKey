@@ -25,7 +25,7 @@ public class FileEnsurer
 
 //--------------------start-of-fileEnsurer()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public FileEnsurer()
+    public FileEnsurer() throws IOException
     {
 
         String userHome = System.getProperty("user.home");
@@ -44,6 +44,9 @@ public class FileEnsurer
         }
 
         fileHandler = new FileHandler(logger);
+
+        fileHandler.standardCreateDirectory(configDir);
+        fileHandler.standardCreateFile(logFile);
 
         setupBaseDirectories();
 
