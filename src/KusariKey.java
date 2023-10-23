@@ -1,5 +1,7 @@
 // Assuming the classes are in the following packages
 import Modules.FileEnsurer;
+import Modules.Toolkit;
+
 import Handlers.RemoteHandler;
 
 //-------------------start-of-KusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -7,12 +9,14 @@ import Handlers.RemoteHandler;
 public class KusariKey 
 {
     private static FileEnsurer fileEnsurer;
+
+    private static Toolkit toolkit;
+
     private static RemoteHandler remoteHandler;
 
 //-------------------start-of-main()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) throws Exception 
     {
-
         setup();
     }
 
@@ -21,6 +25,8 @@ public class KusariKey
     private static void setup() throws Exception
     {
         fileEnsurer = new FileEnsurer();
+
+        toolkit = new Toolkit(fileEnsurer.getLogger());
         
         fileEnsurer.ensureFiles();
 
