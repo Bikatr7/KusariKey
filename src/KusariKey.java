@@ -30,7 +30,7 @@ public class KusariKey
         
         fileEnsurer.ensureFiles();
 
-        remoteHandler = new RemoteHandler();
+        remoteHandler = new RemoteHandler(fileEnsurer, toolkit);
 
     }
 }
