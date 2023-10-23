@@ -18,6 +18,8 @@ public class KusariKey
     public static void main(String[] args) throws Exception 
     {
         setup();
+
+        toolkit.exitKusariKey();
     }
 
 //-------------------start-of-setup()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
