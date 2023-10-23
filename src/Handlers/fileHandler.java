@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-import java.util.Arrays;
-
 // custom modules
 import Modules.logger;
 
@@ -277,33 +275,5 @@ public class fileHandler
 
         Files.write(path_to_delete_from, lines, java.nio.charset.StandardCharsets.UTF_8);
     }
-
-//-------------------start-of-getNewID()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    public int getNewID(int[] existingIDs)
-    {
-        int newID = 1;
-
-        Arrays.sort(existingIDs);
-
-        for(int id : existingIDs)
-        {
-            if(id < newID)
-            {
-                continue;
-            }
-            else if(id == newID)
-            {
-                newID++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return newID;
-    }
-
 
 } // end-of-fileHandler
