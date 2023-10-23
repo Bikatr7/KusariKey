@@ -34,19 +34,25 @@ public class FileEnsurer
 
         logFile = this.configDir.resolve("log.txt");
 
-        try 
+        try
         {
-            logger = new Logger(logFile);
-        } 
-        catch (IOException e) 
+            Files.createDirectory(configDir);
+        }
+        catch (Exception e)
         {
-           System.exit(0);
         }
 
-        fileHandler = new FileHandler(logger);
+        try 
+        {
+            Files.createFile(logFile);
+        } 
+        catch (Exception e) 
+        {
+        }
 
-        fileHandler.standardCreateDirectory(configDir);
-        fileHandler.standardCreateFile(logFile);
+        logger = new Logger(logFile);
+
+        fileHandler = new FileHandler(logger);
 
         setupBaseDirectories();
 
@@ -60,19 +66,11 @@ public class FileEnsurer
      * @throws IOException
      */
 
-    public void ensureFiles() 
+    public void ensureFiles()  throws IOException
     {
-        try
-        {
-            setupBaseDirectories();
+        setupBaseDirectories();
 
-            setupCredentialsDirectory();
-        }
-        catch(IOException e)
-        {
-            System.exit(0);
-        }
-
+        setupCredentialsDirectory();
     }
 
 //--------------------start-of-setupBaseDirectories()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,10 +81,12 @@ public class FileEnsurer
      * @throws IOException
      */
 
-    private void setupBaseDirectories()
+    private void setupBaseDirectories() throws IOException
     {
 
-        credentialsDir = this.configDir.resolve("credentials");
+        credentialsDir = configDir.resolve("credentials");
+
+        fileHandler.standardCreateDirectory(credentialsDir);
 
     }
 
@@ -100,7 +100,7 @@ public class FileEnsurer
 
     private void setupCredentialsDirectory() throws IOException
     {
-        credentialsFile = this.credentialsDir.resolve("credentials.txt");
+        credentialsFile = credentialsDir.resolve("credentials.txt");
 
         fileHandler.standardCreateFile(credentialsFile);
     } 
