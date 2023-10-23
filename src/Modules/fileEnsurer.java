@@ -28,11 +28,15 @@ public class FileEnsurer
     public FileEnsurer() throws IOException
     {
 
+        //---------------------------------------------/
+
         String userHome = System.getProperty("user.home");
 
         configDir = Paths.get(userHome, "KusariKeyConfig");
 
         logFile = this.configDir.resolve("log.txt");
+
+        //---------------------------------------------/
 
         try
         {
@@ -50,12 +54,17 @@ public class FileEnsurer
         {
         }
 
+        //---------------------------------------------/
+
         logger = new Logger(logFile);
+
+        logger.clearLogFile();
 
         fileHandler = new FileHandler(logger);
 
-        setupBaseDirectories();
+        //---------------------------------------------/
 
+        setupBaseDirectories();
     }
 
 //--------------------start-of-ensureFiles()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
