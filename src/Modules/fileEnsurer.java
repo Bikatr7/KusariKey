@@ -38,21 +38,10 @@ public class FileEnsurer
 
         //---------------------------------------------/
 
-        try
-        {
-            Files.createDirectory(configDir);
-        }
-        catch (Exception e)
-        {
-        }
+        Files.createDirectory(configDir);
 
-        try 
-        {
-            Files.createFile(logFile);
-        } 
-        catch (Exception e) 
-        {
-        }
+        Files.createFile(logFile);
+        
 
         //---------------------------------------------/
 
