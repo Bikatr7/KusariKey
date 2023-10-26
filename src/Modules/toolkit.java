@@ -60,7 +60,6 @@ public class Toolkit
     * @param prompt String - the message we are prompting the user with
     * @param input Scanner - reads console input
     * @return userInput String - the user's input
-    * @throws Exception
     */
 
     public static String userConfirm(String prompt, Scanner input)
@@ -147,6 +146,11 @@ public class Toolkit
     }
 
 //-------------------start-of-handleCriticalException()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Handles a critical exception.
+     * @param e Exception - the exception we are handling
+     */
 
     public void handleCriticalException(Exception e)
     {
