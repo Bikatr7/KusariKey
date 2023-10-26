@@ -38,9 +38,11 @@ public class FileEnsurer
 
         //---------------------------------------------/
 
-        Files.createDirectory(configDir);
+        if(!Files.exists(configDir))
+            Files.createDirectory(configDir);
 
-        Files.createFile(logFile);
+        if(!Files.exists(logFile))
+            Files.createFile(logFile);
         
 
         //---------------------------------------------/

@@ -154,8 +154,6 @@ public class Toolkit
 
     public void handleCriticalException(Exception e)
     {
-        System.out.println("Critical Exception: " + e.getMessage());
-
         System.out.println("KusariKey will now exit");
 
         pauseConsole();

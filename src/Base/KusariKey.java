@@ -1,5 +1,6 @@
 package Base;
-// Assuming the classes are in the following packages
+
+// custom modules
 import Modules.FileEnsurer;
 import Modules.Toolkit;
 
@@ -9,11 +10,11 @@ import Handlers.RemoteHandler;
 
 public class KusariKey 
 {
-    private static FileEnsurer fileEnsurer;
+    private FileEnsurer fileEnsurer;
 
-    private static Toolkit toolkit;
+    private Toolkit toolkit;
 
-    private static RemoteHandler remoteHandler;
+    private RemoteHandler remoteHandler;
 
 //-------------------start-of-KusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -45,7 +46,7 @@ public class KusariKey
 
 //-------------------start-of-setup()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    private static void setup() throws Exception
+    private void setup() throws Exception
     {
         fileEnsurer = new FileEnsurer();
 
