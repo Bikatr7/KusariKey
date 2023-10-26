@@ -1,3 +1,4 @@
+package Base;
 // Assuming the classes are in the following packages
 import Modules.FileEnsurer;
 import Modules.Toolkit;
@@ -14,8 +15,16 @@ public class KusariKey
 
     private static RemoteHandler remoteHandler;
 
-//-------------------start-of-main()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public static void main(String[] args) throws Exception 
+//-------------------start-of-KusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public KusariKey() throws Exception
+    {
+
+    }
+
+//-------------------start-of-runKusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    public void runKusariKey() throws Exception 
     {
         setup();
 
