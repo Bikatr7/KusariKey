@@ -114,8 +114,6 @@ public class Toolkit
   
     /**
     * Clears the console.
-    * @param void
-    * @return void
     */
 
     public static void clearConsole() 
@@ -130,7 +128,43 @@ public class Toolkit
         }
     }
 
+//-------------------start-of-pauseConsole()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Pauses the console.
+     */
+
+    public static void pauseConsole()
+    {
+        try 
+        {
+            new ProcessBuilder("cmd", "/c", "pause").inheritIO().start().waitFor();
+        } 
+        catch (Exception e)
+        {
+            // skip
+        }
+    }
+
+//-------------------start-of-handleCriticalException()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public void handleCriticalException(Exception e)
+    {
+        System.out.println("Critical Exception: " + e.getMessage());
+
+        System.out.println("KusariKey will now exit");
+
+        pauseConsole();
+
+        exitKusariKey();
+        
+    }
+
 //-------------------start-of-exitKusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Exits KusariKey.
+     */
 
     public void exitKusariKey()
     {
