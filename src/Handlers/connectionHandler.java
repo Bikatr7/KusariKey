@@ -9,12 +9,16 @@ import java.sql.SQLException;
 import Modules.FileEnsurer;
 import Modules.Toolkit;
 
+//-------------------start-of-ConnectionHandler---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 public class ConnectionHandler 
 {
 
     private Connection connection;
     private FileEnsurer fileEnsurer;
     private Toolkit toolkit;
+
+//-------------------start-of-ConnectionHandler()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     public ConnectionHandler(FileEnsurer fileEnsurer, Toolkit toolkit)
     {
@@ -24,6 +28,7 @@ public class ConnectionHandler
         this.connection = initializeDatabaseConnection();
     }
     
+//-------------------start-of-initializeDatabaseConnection()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     private Connection initializeDatabaseConnection()
     {
