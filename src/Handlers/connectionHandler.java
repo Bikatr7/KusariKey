@@ -29,7 +29,12 @@ public class ConnectionHandler
     }
     
 //-------------------start-of-initializeDatabaseConnection()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
+
+    /**
+     * Initializes the database connection
+     * @return connection - Connection The database connection
+     */
+
     private Connection initializeDatabaseConnection()
     {
         Connection fauxConnection = null;
