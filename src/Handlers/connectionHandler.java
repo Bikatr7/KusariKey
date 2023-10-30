@@ -1,5 +1,8 @@
 package Handlers;
 
+// built-in libraries
+import java.util.Base64;
+
 // third-party libraries
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,8 +40,21 @@ public class ConnectionHandler
 
     private Connection initializeDatabaseConnection()
     {
-        Connection fauxConnection = null;
+        String user;
+        String password;
+
+        Connection connection = null;
+
+        try 
+        {
+            user = fileEnsurer.getFileHandler().readSeiLine(null, 0, 0);
+            
+        } 
+        catch (Exception e) 
+        {
+            // TODO: handle exception
+        }
         
-        return fauxConnection;
+        return connection;
     }
 }

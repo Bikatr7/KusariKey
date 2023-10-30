@@ -62,12 +62,24 @@ public class FileEnsurer
 
     /**
      * Returns the logger object.
-     * @return Logger
+     * @return logger Logger - The logger object.
      */
 
     public Logger getLogger()
     {
         return logger;
+    }
+
+//--------------------start-of-getFileHandler()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Returns the fileHandler object.
+     * @return fileHandler FileHandler - The fileHandler object.
+     */
+
+    public FileHandler getFileHandler()
+    {
+        return fileHandler;
     }
 
 //--------------------start-of-ensureFiles()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
