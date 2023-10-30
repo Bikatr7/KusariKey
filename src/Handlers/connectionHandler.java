@@ -47,7 +47,8 @@ public class ConnectionHandler
 
         try 
         {
-            user = fileEnsurer.getFileHandler().readSeiLine(null, 0, 0);
+            user = fileEnsurer.getFileHandler().readSeiLine(fileEnsurer.getPath("credentialsPath"), 1, 0);
+            password = fileEnsurer.getFileHandler().readSeiLine(fileEnsurer.getPath("credentialsPath"), 1, 1);
             
         } 
         catch (Exception e) 

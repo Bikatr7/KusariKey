@@ -1,6 +1,9 @@
 package Modules;
 
 // built-in libraries
+import java.util.Map;
+import java.util.HashMap;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
@@ -13,6 +16,8 @@ import Handlers.FileHandler;
 
 public class FileEnsurer 
 {
+    private Map<String, Path> pathMap = new HashMap<String, Path>();
+
     private Path configDir;
     private Path credentialsDir;
     private Path credentialsFile;
@@ -95,6 +100,36 @@ public class FileEnsurer
         setupBaseDirectories();
 
         setupCredentialsDirectory();
+
+        setupPathMap();
+    }
+
+//--------------------start-of-setupPathMap()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Sets up the pathMap.
+     * @return void
+     */
+
+    public void setupPathMap()
+    {
+        pathMap.put("configDir", configDir);
+        pathMap.put("credentialsDir", credentialsDir);
+        pathMap.put("credentialsFile", credentialsFile);
+        pathMap.put("logFile", logFile);
+    }
+
+//--------------------start-of-getPath()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    /**
+     * Gets the path from the pathMap.
+     * @param key String - The key of the path.
+     * @return path Path - The path.
+     */
+
+    public Path getPath(String key)
+    {
+        return pathMap.get(key);
     }
 
 //--------------------start-of-setupBaseDirectories()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
