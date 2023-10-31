@@ -4,6 +4,8 @@ package Modules;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import javax.tools.Tool;
+
 // custom modules
 import Modules.Logger;
 
@@ -11,15 +13,13 @@ import Modules.Logger;
 
 public class Toolkit
 {
-    private static Logger logger;
-    private Scanner input;
+    private static Scanner input = new Scanner(System.in);
 
 //-------------------start-of-Toolkit()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public Toolkit(Logger logger)
+    private Toolkit()
     {
-        this.logger = logger;
-        this.input = new Scanner(System.in);
+        throw new UnsupportedOperationException("This is a static class and cannot be instantiated");
     }
 
 //-------------------start-of-getInput()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -29,9 +29,9 @@ public class Toolkit
      * @return input Scanner - the input scanner
      */
 
-    public Scanner getInput()
+    public static Scanner getInput()
     {
-        return this.input;
+        return input;
     }
 
 //-------------------start-of-getNewID()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ public class Toolkit
      * @return newID int - the new ID
      */
 
-    public int getNewID(int[] existingIDs)
+    public static int getNewID(int[] existingIDs)
     {
         int newID = 1;
 
@@ -75,7 +75,7 @@ public class Toolkit
     * @return userInput String - the user's input
     */
 
-    public String userConfirm(String prompt)
+    public static String userConfirm(String prompt)
     {
         String confirmation = "Just To Confirm You Selected ";
         String options = " Press 1 To Confirm or 2 To Retry";
@@ -174,7 +174,7 @@ public class Toolkit
             System.out.println(ste.toString());
         }
 
-        System.out.println("KusariKey will now exit");
+        System.out.println("\nKusariKey will now exit");
 
         pauseConsole();
 
@@ -194,7 +194,7 @@ public class Toolkit
 
         System.out.println("Exiting KusariKey...");
 
-        logger.pushBatch();
+        Logger.pushBatch();
 
         System.exit(0);
     }
