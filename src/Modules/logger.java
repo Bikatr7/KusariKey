@@ -13,31 +13,25 @@ import java.io.IOException;
 public class Logger 
 {
 
-    private String batch;
-    private Path logPath;
-    private FileWriter logWriter;
+    private static String currentBatch = "";
+    private static Path logPath = FileEnsurer.generateLogFile()
+    private static FileWriter logWriter = new FileWriter(logPath.toString(), true);
 
 //-------------------start-of-logger()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  
-    public Logger(Path logPath) throws IOException
+    private Logger()
     {
-        
-        this.batch = "";
-        this.logPath = logPath;
-
-        this.logWriter = new FileWriter(logPath.toString(), true);
-        
+        throw new UnsupportedOperationException("This is a static class and cannot be instantiated");
     }
-
+    
 //-------------------start-of-getTimestamp()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Gets the current timestamp for an action to be logged
-     * @param void
-     * @return formattedDateTime - String
+     * Gets the current timestamp for an action to be logged.
+     * @return formattedDateTime String - the formatted date and time.
      */
 
-    private String getTimestamp()
+    private static String getTimestamp()
     {
 
         LocalDateTime now = LocalDateTime.now();
@@ -52,14 +46,13 @@ public class Logger
 //-------------------start-of-logAction()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Logs an action to the batch
-     * @param action - String
-     * @return None
+     * Logs an action to the current batch.
+     * @param action String - the action to be logged
      */
 
-    public void logAction(String action)
+    public static void logAction(String action)
     {
-        batch += getTimestamp() + " " + action + "\n";
+        currentBatch += getTimestamp() + " " + action + "\n";
     }
 
 //-------------------start-of-pushBatch()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------

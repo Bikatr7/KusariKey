@@ -16,19 +16,19 @@ import Handlers.FileHandler;
 
 public class FileEnsurer 
 {
-    private Map<String, Path> pathMap = new HashMap<String, Path>();
+    private static Map<String, Path> pathMap = new HashMap<String, Path>();
 
-    private Path configDir;
-    private Path credentialsDir;
-    private Path credentialsFile;
+    private static Path configDir;
+    private static Path credentialsDir;
+    private static Path credentialsFile;
 
-    private Path logFile;
+    private static Path logFile;
 
-    private String[] pathNames;
+    private static String[] pathNames;
 
-    private Logger logger;
+    private static Logger logger;
 
-    private FileHandler fileHandler; 
+    private static FileHandler fileHandler; 
 
 //--------------------start-of-fileEnsurer()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -41,22 +41,12 @@ public class FileEnsurer
 
         configDir = Paths.get(userHome, "KusariKeyConfig");
 
-        logFile = this.configDir.resolve("log.txt");
-
         //---------------------------------------------/
 
         if(!Files.exists(configDir))
             Files.createDirectory(configDir);
 
-        if(!Files.exists(logFile))
-            Files.createFile(logFile);
-        
-
         //---------------------------------------------/
-
-        logger = new Logger(logFile);
-
-        logger.clearLogFile();
 
         fileHandler = new FileHandler(logger);
 
@@ -85,6 +75,21 @@ public class FileEnsurer
     public FileHandler getFileHandler()
     {
         return fileHandler;
+    }
+
+//--------------------start-of-generateLogFile()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    public static Path generateLogFile() throws IOException
+    {
+
+        logFile = configDir.resolve("log.txt");
+
+        if(!Files.exists(logFile))
+            Files.createFile(logFile);
+
+        Logger.clearLogFile()
+
+        return logFile;
     }
 
 //--------------------start-of-ensureFiles()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
