@@ -104,12 +104,18 @@ public class FileHandler
     /**
      * Switches the current file to the file specified by the filePath parameter.
      * @param filePath  Path - The path of the file to switch to.
-     * @return void
      * @throws IOException
+     * @throws IllegalArgumentException
      */
 
-    public void switchToFile(Path filePath) throws IOException
+    public void switchToFile(Path filePath) throws IOException, IllegalArgumentException
     {
+
+        if (filePath == null) 
+        {
+            throw new IllegalArgumentException("Provided filePath is null");
+        }
+
         currentFilePath = filePath;
 
         if(writer != null)
@@ -122,7 +128,7 @@ public class FileHandler
             reader.close();
         }
 
-        reader = new Scanner(currentFilePath);
+        reader = new Scanner(Files.newInputStream(currentFilePath));
         writer = new FileWriter(currentFilePath.toString(), true);
 
         logger.logAction("Switched to file: " + currentFilePath.toString());

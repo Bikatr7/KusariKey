@@ -24,6 +24,8 @@ public class FileEnsurer
 
     private Path logFile;
 
+    private String[] pathNames;
+
     private Logger logger;
 
     private FileHandler fileHandler; 
@@ -59,8 +61,6 @@ public class FileEnsurer
         fileHandler = new FileHandler(logger);
 
         //---------------------------------------------/
-
-        setupBaseDirectories();
     }
 
 //--------------------start-of-getLogger()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -129,6 +129,12 @@ public class FileEnsurer
 
     public Path getPath(String key)
     {
+        pathNames = new String[pathMap.size()];
+
+        pathMap.keySet().toArray(pathNames);
+
+        key = Toolkit.get_intended_answer(key, pathNames);
+
         return pathMap.get(key);
     }
 

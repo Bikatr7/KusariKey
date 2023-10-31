@@ -11,13 +11,27 @@ import Modules.Logger;
 
 public class Toolkit
 {
-    private Logger logger;
+    private static Logger logger;
+    private Scanner input;
 
 //-------------------start-of-Toolkit()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     public Toolkit(Logger logger)
     {
         this.logger = logger;
+        this.input = new Scanner(System.in);
+    }
+
+//-------------------start-of-getInput()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Gets the input scanner.
+     * @return input Scanner - the input scanner
+     */
+
+    public Scanner getInput()
+    {
+        return this.input;
     }
 
 //-------------------start-of-getNewID()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -58,11 +72,10 @@ public class Toolkit
     /**
     * Confirms user input.
     * @param prompt String - the message we are prompting the user with
-    * @param input Scanner - reads console input
     * @return userInput String - the user's input
     */
 
-    public static String userConfirm(String prompt, Scanner input)
+    public String userConfirm(String prompt)
     {
         String confirmation = "Just To Confirm You Selected ";
         String options = " Press 1 To Confirm or 2 To Retry";
@@ -152,8 +165,15 @@ public class Toolkit
      * @param e Exception - the exception we are handling
      */
 
-    public void handleCriticalException(Exception e)
+    public static void handleCriticalException(Exception e)
     {
+        System.out.println("Critical Exception: " + e.getMessage());
+
+        for (StackTraceElement ste : e.getStackTrace()) 
+        {
+            System.out.println(ste.toString());
+        }
+
         System.out.println("KusariKey will now exit");
 
         pauseConsole();
@@ -168,13 +188,13 @@ public class Toolkit
      * Exits KusariKey.
      */
 
-    public void exitKusariKey()
+    public static void exitKusariKey()
     {
         clearConsole();
 
         System.out.println("Exiting KusariKey...");
 
-        this.logger.pushBatch();
+        logger.pushBatch();
 
         System.exit(0);
     }
@@ -188,58 +208,64 @@ public class Toolkit
      * @return distance int - the levenshtein distance between the two strings
      */
 
-    public int levenshtein(String string1, String string2)
-    {
-        int string1Length;
-        int string2Length;
-
-        int[][] distance;
-
-        string1Length = string1.length();
-        string2Length = string2.length();
-
-        // init the distance array, all 0 by default
-        distance = new int[string1Length  + 1][string2Length + 1];
-
-
-        for(int i = 0; i <= string1Length; i++) 
-        {
+     public static int levenshtein(String string1, String string2) {
+        int string1Length = string1.length();
+        int string2Length = string2.length();
+    
+        int[][] distance = new int[string1Length + 1][string2Length + 1];
+    
+        for (int i = 0; i <= string1Length; i++) {
             distance[i][0] = i;
         }
-
-        for(int ii = 0; ii <= string2Length+1; ii++)
-        {
+    
+        for (int ii = 0; ii <= string2Length; ii++) {
             distance[0][ii] = ii;
         }
-
-        for(int i = 1; i < string1Length + 1; i++)
-        {
-            for(int ii = 1; i < string2Length + 1; ii++)
-            {
-                int cost = 0;
-
-                if(string1.charAt(i - 1) == string2.charAt(ii - 1))
-                {
-                    cost = 0;
-                }
-                else
-                {
-                    cost = 1;
-                }
-
-                distance[i][ii] = Math.min(distance[i - 1][ii] + 1, distance[i][ii - 1] + 1);
-
-                distance[i][ii] = Math.min(distance[i][ii], distance[i - 1][ii - 1] + cost);
-
-                if(i > 1 && ii > 1 && string1.charAt(i - 1) == string2.charAt(ii - 2) && string1.charAt(i - 2) == string2.charAt(ii - 1))
-                {
-                    distance[i][ii] = Math.min(distance[i][ii], distance[i - 2][ii - 2] + cost);
+    
+        for (int i = 1; i <= string1Length; i++) {
+            for (int ii = 1; ii <= string2Length; ii++) {
+                int cost = (string1.charAt(i - 1) == string2.charAt(ii - 1)) ? 0 : 1;
+    
+                distance[i][ii] = Math.min(distance[i - 1][ii] + 1, // deletion
+                                 Math.min(distance[i][ii - 1] + 1, // insertion
+                                          distance[i - 1][ii - 1] + cost)); // substitution
+    
+                if (i > 1 && ii > 1 && string1.charAt(i - 1) == string2.charAt(ii - 2) && string1.charAt(i - 2) == string2.charAt(ii - 1)) {
+                    distance[i][ii] = Math.min(distance[i][ii], distance[i - 2][ii - 2] + cost); // transposition
                 }
             }
         }
-
+    
         return distance[string1Length][string2Length];
+    }
+    
 
-    } 
+//-------------------start-of-get_intended_answer()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Gets the intended answer.
+     * @param typo String - the typo
+     * @param correct_answers String[] - the correct answers
+     * @return closest_string String - the closest string
+     */
+
+    public static String get_intended_answer(String typo, String[] correct_answers) 
+    {
+        int closest_distance = Integer.MAX_VALUE;
+        String closest_string = "";
+
+        for (String string : correct_answers) 
+        {
+            int distance = levenshtein(typo, string);
+            
+            if (distance < closest_distance) 
+            {
+                closest_distance = distance;
+                closest_string = string;
+            }
+        }
+
+        return closest_string;
+    }
 
 } // Toolkit

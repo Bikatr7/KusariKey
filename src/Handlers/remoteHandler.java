@@ -12,7 +12,7 @@ public class RemoteHandler
  private FileEnsurer fileEnsurer;
  private Toolkit toolkit;
 
-    public RemoteHandler(FileEnsurer fileEnsurer, Toolkit toolkit)
+    public RemoteHandler(FileEnsurer fileEnsurer, Toolkit toolkit) throws Exception
     {
 
         this.fileEnsurer = fileEnsurer;

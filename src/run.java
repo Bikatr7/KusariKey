@@ -1,4 +1,6 @@
+// custom modules
 import Base.KusariKey;
+import Modules.Toolkit;
 
 public class Run 
 {
@@ -11,23 +13,9 @@ public class Run
         {
             client.runKusariKey();
         } 
-        catch (Exception e) 
+        catch (Exception e)  
         {
-            System.out.println("Critical Exception: " + e);
-
-            for (StackTraceElement ste : e.getStackTrace()) 
-            {
-                System.out.println(ste.toString());
-            }
-        
-            if (client.getToolkit() != null) 
-            {
-                client.getToolkit().handleCriticalException(e);
-            } 
-            else 
-            {
-                System.out.println("Toolkit is not initialized. Cannot handle exception.");
-            }
+            Toolkit.handleCriticalException(e);
         }
         
  
