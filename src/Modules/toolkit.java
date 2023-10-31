@@ -208,22 +208,27 @@ public class Toolkit
      * @return distance int - the levenshtein distance between the two strings
      */
 
-     public static int levenshtein(String string1, String string2) {
+     public static int levenshtein(String string1, String string2) 
+     {
         int string1Length = string1.length();
         int string2Length = string2.length();
     
         int[][] distance = new int[string1Length + 1][string2Length + 1];
     
-        for (int i = 0; i <= string1Length; i++) {
+        for (int i = 0; i <= string1Length; i++) 
+        {
             distance[i][0] = i;
         }
     
-        for (int ii = 0; ii <= string2Length; ii++) {
+        for (int ii = 0; ii <= string2Length; ii++) 
+        {
             distance[0][ii] = ii;
         }
     
-        for (int i = 1; i <= string1Length; i++) {
-            for (int ii = 1; ii <= string2Length; ii++) {
+        for (int i = 1; i <= string1Length; i++) 
+        {
+            for (int ii = 1; ii <= string2Length; ii++) 
+            {
                 int cost = (string1.charAt(i - 1) == string2.charAt(ii - 1)) ? 0 : 1;
     
                 distance[i][ii] = Math.min(distance[i - 1][ii] + 1, // deletion
@@ -231,6 +236,7 @@ public class Toolkit
                                           distance[i - 1][ii - 1] + cost)); // substitution
     
                 if (i > 1 && ii > 1 && string1.charAt(i - 1) == string2.charAt(ii - 2) && string1.charAt(i - 2) == string2.charAt(ii - 1)) {
+                    
                     distance[i][ii] = Math.min(distance[i][ii], distance[i - 2][ii - 2] + cost); // transposition
                 }
             }
