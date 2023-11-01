@@ -1,6 +1,6 @@
 // custom modules
 import Base.KusariKey;
-import Modules.Toolkit;
+import Modules.ExceptionUtil;
 
 public class Run 
 {
@@ -9,16 +9,13 @@ public class Run
 
         KusariKey client = new KusariKey();
 
-        try 
+        // run the client, catching any critical exceptions
+        ExceptionUtil.criticalTryCatch(() -> 
         {
-            client.runKusariKey();
-        } 
-        catch (Exception e)  
-        {
-            Toolkit.handleCriticalException(e);
-        }
-        
- 
-        
+
+        client.runKusariKey();
+
+        });
+
     }    
 }
