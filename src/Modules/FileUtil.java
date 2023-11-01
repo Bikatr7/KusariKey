@@ -120,7 +120,7 @@ public class FileUtil
             reader.close();
         }
 
-        reader = new Scanner(Files.newInputStream(currentFilePath));
+        reader = new Scanner(currentFilePath);
         writer = new FileWriter(currentFilePath.toString(), true);
 
         Logger.logAction("Switched to file: " + currentFilePath.toString());
@@ -150,6 +150,7 @@ public class FileUtil
         switchToFile(path_to_write_to);
 
         writer.write(line_to_write + "\n");
+        writer.flush();
 
         if(oldPath != null)
             switchToFile(oldPath);

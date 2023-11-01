@@ -5,6 +5,7 @@ import java.util.Base64;
 import java.util.Scanner;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 // third-party libraries
@@ -60,9 +61,9 @@ public class ConnectionHandler
         try 
         {
             // get the credentials from the credentials file if it exists
-            user = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 0)));
-            password = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 1)));
-            database_name = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 2)));
+            user = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 1)), StandardCharsets.UTF_8);
+            password = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 2)), StandardCharsets.UTF_8);
+            database_name = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 3)), StandardCharsets.UTF_8);
 
             // need to add the database name to the url
             url += database_name;
@@ -96,14 +97,14 @@ public class ConnectionHandler
 
                 // write the credentials to the credentials file
                 credentials = new String[] {
-                    Base64.getEncoder().encodeToString(user.getBytes()),
-                    Base64.getEncoder().encodeToString(password.getBytes()),
-                    Base64.getEncoder().encodeToString(database_name.getBytes())
+                    Base64.getEncoder().encodeToString(user.getBytes(StandardCharsets.UTF_8)),
+                    Base64.getEncoder().encodeToString(password.getBytes(StandardCharsets.UTF_8)),
+                    Base64.getEncoder().encodeToString(database_name.getBytes(StandardCharsets.UTF_8))    
                 };
 
                 FileUtil.writeSeiLine(credentialsPath, credentials);
                 
-                
+
             } 
             catch(IllegalArgumentException | NullPointerException | SQLException | IOException | IndexOutOfBoundsException ex)
             {
