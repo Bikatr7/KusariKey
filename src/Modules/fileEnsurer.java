@@ -9,9 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.IOException;
 
-// custom modules
-import Handlers.FileHandler;
-
 //--------------------start-of-fileEnsurer------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class FileEnsurer 
@@ -26,55 +23,11 @@ public class FileEnsurer
 
     private static String[] pathNames;
 
-    private static Logger logger;
-
-    private static FileHandler fileHandler; 
-
 //--------------------start-of-fileEnsurer()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public FileEnsurer() throws IOException
+    private FileEnsurer()
     {
-
-        //---------------------------------------------/
-
-        String userHome = System.getProperty("user.home");
-
-        configDir = Paths.get(userHome, "KusariKeyConfig");
-
-        //---------------------------------------------/
-
-        if(!Files.exists(configDir))
-            Files.createDirectory(configDir);
-
-        //---------------------------------------------/
-
-        fileHandler = new FileHandler(logger);
-
-        //---------------------------------------------/
-    }
-
-//--------------------start-of-getLogger()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Returns the logger object.
-     * @return logger Logger - The logger object.
-     */
-
-    public Logger getLogger()
-    {
-        return logger;
-    }
-
-//--------------------start-of-getFileHandler()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Returns the fileHandler object.
-     * @return fileHandler FileHandler - The fileHandler object.
-     */
-
-    public FileHandler getFileHandler()
-    {
-        return fileHandler;
+        throw new UnsupportedOperationException("This is a static class and cannot be instantiated.");
     }
 
 //--------------------start-of-generateLogFile()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,7 +40,7 @@ public class FileEnsurer
         if(!Files.exists(logFile))
             Files.createFile(logFile);
 
-        Logger.clearLogFile()
+        Logger.clearLogFile();
 
         return logFile;
     }
@@ -96,12 +49,17 @@ public class FileEnsurer
 
     /**
      * Ensures that all files are present and ready to be used.
-     * @return void
      * @throws IOException
      */
 
-    public void ensureFiles()  throws IOException
+    public static void ensureFiles()  throws IOException
     {
+
+        configDir = Paths.get(System.getProperty("user.home"), "KusariKeyConfig");
+
+        if(!Files.exists(configDir))
+            Files.createDirectory(configDir);
+
         setupBaseDirectories();
 
         setupCredentialsDirectory();
@@ -113,10 +71,9 @@ public class FileEnsurer
 
     /**
      * Sets up the pathMap.
-     * @return void
      */
 
-    public void setupPathMap()
+    public static void setupPathMap()
     {
         pathMap.put("configDir", configDir);
         pathMap.put("credentialsDir", credentialsDir);
@@ -132,7 +89,7 @@ public class FileEnsurer
      * @return path Path - The path.
      */
 
-    public Path getPath(String key)
+    public static Path getPath(String key)
     {
         pathNames = new String[pathMap.size()];
 
@@ -147,32 +104,28 @@ public class FileEnsurer
 
     /**
      * Ensures that the base directories are present and ready to be used.
-     * @return void
      * @throws IOException
      */
 
-    private void setupBaseDirectories() throws IOException
+    private static void setupBaseDirectories() throws IOException
     {
-
         credentialsDir = configDir.resolve("credentials");
 
-        fileHandler.standardCreateDirectory(credentialsDir);
-
+        FileUtil.standardCreateDirectory(credentialsDir);
     }
 
 //--------------------start-of-setupCredentialsDirectory()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * Ensures that the files located in the credentials directory are present and ready to be used.
-     * @return void
      * @throws IOException
      */
 
-    private void setupCredentialsDirectory() throws IOException
+    private static void setupCredentialsDirectory() throws IOException
     {
         credentialsFile = credentialsDir.resolve("credentials.txt");
 
-        fileHandler.standardCreateFile(credentialsFile);
+        FileUtil.standardCreateFile(credentialsFile);
     } 
     
 }
