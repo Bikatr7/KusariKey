@@ -1,6 +1,7 @@
 package Base;
 
 // custom modules
+import Modules.ExceptionUtil;
 import Modules.FileEnsurer;
 import Modules.Toolkit;
 
@@ -10,10 +11,6 @@ import Handlers.RemoteHandler;
 
 public class KusariKey 
 {
-    private FileEnsurer fileEnsurer;
-
-    private Toolkit toolkit;
-
     private RemoteHandler remoteHandler;
 
 //-------------------start-of-KusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,39 +19,31 @@ public class KusariKey
     {
 
     }
-
-//-------------------start-of-getToolkit()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Returns the toolkit.
-     * @return toolkit Toolkit - the toolkit
-     */
-
-    public Toolkit getToolkit()
-    {
-        return toolkit;
-    }
-
 //-------------------start-of-runKusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     
+    /**
+     * Runs the KusariKey program.
+     * @throws Exception
+     */
+
     public void runKusariKey() throws Exception 
     {
         setup();
 
-        Toolkit.exitKusariKey();
+        ExceptionUtil.exitKusariKey();
     }
 
 //-------------------start-of-setup()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Sets up the KusariKey program.
+     * @throws Exception
+     */
+
     private void setup() throws Exception
     {
-        fileEnsurer = new FileEnsurer();
+        FileEnsurer.ensureFiles();
 
-        toolkit = new Toolkit(fileEnsurer.getLogger());
-        
-        fileEnsurer.ensureFiles();
-
-        remoteHandler = new RemoteHandler(fileEnsurer, toolkit);
-
+        remoteHandler = new RemoteHandler();
     }
 }

@@ -4,6 +4,7 @@ package Handlers;
 import java.util.Base64;
 import java.util.Scanner;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 // third-party libraries
@@ -11,26 +12,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import Modules.ExceptionUtil;
 // custom modules
 import Modules.FileEnsurer;
 import Modules.Toolkit;
+import Modules.FileUtil;
 
 //-------------------start-of-ConnectionHandler---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class ConnectionHandler 
 {
-
     private Connection connection;
-    private FileEnsurer fileEnsurer;
-    private Toolkit toolkit;
 
 //-------------------start-of-ConnectionHandler()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    public ConnectionHandler(FileEnsurer fileEnsurer, Toolkit toolkit) throws ClassNotFoundException, SQLException, Exception
+    public ConnectionHandler() throws ClassNotFoundException, SQLException
     {
-        this.fileEnsurer = fileEnsurer;
-        this.toolkit = toolkit;
-    
         this.connection = initializeDatabaseConnection();
     }
     
@@ -41,7 +38,7 @@ public class ConnectionHandler
      * @return connection - Connection The database connection
      */
 
-    private Connection initializeDatabaseConnection() throws ClassNotFoundException, SQLException, Exception
+    private Connection initializeDatabaseConnection() throws ClassNotFoundException, SQLException
     {
         String user;
         String password;
@@ -53,9 +50,9 @@ public class ConnectionHandler
 
         Connection connection = null;
 
-        Path credentialsPath = fileEnsurer.getPath("credentialsFile");
+        Path credentialsPath = FileEnsurer.getPath("credentialsFile");
         
-        Scanner input = toolkit.getInput();
+        Scanner input = Toolkit.getInput();
 
         // mysql driver
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -63,19 +60,18 @@ public class ConnectionHandler
         try 
         {
             // get the credentials from the credentials file if it exists
-            user = new String(Base64.getDecoder().decode(fileEnsurer.getFileHandler().readSeiLine(credentialsPath, 1, 0)));
-            password = new String(Base64.getDecoder().decode(fileEnsurer.getFileHandler().readSeiLine(credentialsPath, 1, 1)));
-            database_name = new String(Base64.getDecoder().decode(fileEnsurer.getFileHandler().readSeiLine(credentialsPath, 1, 2)));
+            user = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 0)));
+            password = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 1)));
+            database_name = new String(Base64.getDecoder().decode(FileUtil.readSeiLine(credentialsPath, 1, 2)));
 
             // need to add the database name to the url
             url += database_name;
 
             connection = DriverManager.getConnection(url, user, password);
-            
-            
+        
         } 
         // if credentials not present, get new credentials
-        catch (Exception e) 
+        catch (IllegalArgumentException | NullPointerException | SQLException |IOException e)
         {
             try 
             {
@@ -105,16 +101,15 @@ public class ConnectionHandler
                     Base64.getEncoder().encodeToString(database_name.getBytes())
                 };
 
-                fileEnsurer.getFileHandler().writeSeiLine(credentialsPath, credentials);
+                FileUtil.writeSeiLine(credentialsPath, credentials);
                 
                 
             } 
-            catch(Exception ex)
+            catch(IllegalArgumentException | NullPointerException | SQLException | IOException ex)
             {
                 System.err.println("Error with creating connection to database. Please check your credentials");
 
-                throw ex;
-
+                ExceptionUtil.handleCriticalException(ex);
             }
         }
         
