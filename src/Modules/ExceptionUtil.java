@@ -4,7 +4,10 @@ package Modules;
 
 public class ExceptionUtil 
 {
-    
+    /**
+     * This class is used to handle exceptions.
+     */
+
 //--------------------start-of-exceptionUtil()------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 private ExceptionUtil()
@@ -14,10 +17,35 @@ private ExceptionUtil()
 
 //-------------------start-of-ExceptionalRunnable---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * This interface is used to run a critical try-catch block.
+     * Implement this interface to use the criticalTryCatch() method.
+     * Implementations of this interface should throw an exception.
+     */
+
     @FunctionalInterface
     public interface ExceptionalRunnable<E extends Exception> 
     {
         void run() throws E;
+    }
+
+//-------------------start-of-critcalTryCatch()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Runs a critical try-catch block.
+     * @param runnable ExceptionalRunnable - the runnable to be run.
+     */
+
+    public static <E extends Exception> void criticalTryCatch(ExceptionalRunnable<E> runnable) 
+    {
+        try 
+        {
+            runnable.run();
+        } 
+        catch (Exception e) 
+        {
+            handleCriticalException(e);
+        }
     }
 
 //-------------------start-of-handleCriticalException()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
