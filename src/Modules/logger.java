@@ -14,14 +14,26 @@ public class Logger
 {
 
     private static String currentBatch = "";
-    private static Path logPath = FileEnsurer.generateLogFile()
-    private static FileWriter logWriter = new FileWriter(logPath.toString(), true);
+    private static Path logPath;
+    private static FileWriter logWriter;
+    
+    // crimes against humanity
+    static 
+    {
+        ExceptionUtil.criticalTryCatch(() -> 
+        {
+
+        logPath = FileEnsurer.generateLogFile();
+        logWriter = new FileWriter(logPath.toString(), true);
+
+        });
+    }
 
 //-------------------start-of-logger()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  
     private Logger()
     {
-        throw new UnsupportedOperationException("This is a static class and cannot be instantiated");
+        throw new UnsupportedOperationException("This is a static class and cannot be instantiated.");
     }
     
 //-------------------start-of-getTimestamp()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,7 +59,7 @@ public class Logger
 
     /**
      * Logs an action to the current batch.
-     * @param action String - the action to be logged
+     * @param action String - the action to be logged.
      */
 
     public static void logAction(String action)
@@ -58,52 +70,40 @@ public class Logger
 //-------------------start-of-pushBatch()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Pushes the batch to the log file
-     * @param void
-     * @return None
+     * Pushes the batch to the log file.
      */
 
-    public void pushBatch()
+    public static void pushBatch()
     {
 
-        try
+        ExceptionUtil.criticalTryCatch(() -> 
         {
-            logWriter.write(batch);
-            logWriter.flush();
-        }
-        catch (IOException e)
-        {
-            System.out.println("Error: " + e);
-        }
+        logWriter.write(currentBatch);
+        logWriter.flush();
 
-        batch = "";
+        });
+        
+        currentBatch = "";
 
     }
 
 //-------------------start-of-clearLogFile()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Clears the log file
-     * @param void
-     * @return None
+     * Clears the log file.
      */
 
-    public void clearLogFile()
+    public static void clearLogFile() throws IOException
     {
-        try
-        {
-            logWriter.close();
 
-            // Re-open in non-append mode (truncate file) and close
-            try (FileWriter truncateWriter = new FileWriter(logPath.toString(), false)) {}
+        logWriter.close();
 
-            // reopen it for usage
-            logWriter = new FileWriter(logPath.toString(), true);
-        }
-        catch (IOException e)
-        {
-            System.out.println("Error: " + e);
-        }
+        // Re-open in non-append mode (truncate file) and close
+        try (FileWriter truncateWriter = new FileWriter(logPath.toString(), false)) {}
+
+        // reopen it for usage
+        logWriter = new FileWriter(logPath.toString(), true);
+
     }
 }
 
