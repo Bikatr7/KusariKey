@@ -26,7 +26,7 @@ public class Toolkit
 
     /**
      * Gets the input scanner.
-     * @return input Scanner - the input scanner
+     * @return input Scanner - the input scanner.
      */
 
     public static Scanner getInput()
@@ -38,8 +38,8 @@ public class Toolkit
 
     /**
      * Generates a new ID for a new object.
-     * @param existingIDs int[] - the IDs of the existing objects
-     * @return newID int - the new ID
+     * @param existingIDs int[] - the IDs of the existing objects.
+     * @return newID int - the new ID.
      */
 
     public static int getNewID(int[] existingIDs)
@@ -71,8 +71,8 @@ public class Toolkit
 
     /**
     * Confirms user input.
-    * @param prompt String - the message we are prompting the user with
-    * @return userInput String - the user's input
+    * @param prompt String - the message we are prompting the user with.
+    * @return userInput String - the user's input.
     */
 
     public static String userConfirm(String prompt)
