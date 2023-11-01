@@ -4,11 +4,6 @@ package Modules;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import javax.tools.Tool;
-
-// custom modules
-import Modules.Logger;
-
 //--------------------start-of-toolkit------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class Toolkit
@@ -19,7 +14,7 @@ public class Toolkit
 
     private Toolkit()
     {
-        throw new UnsupportedOperationException("This is a static class and cannot be instantiated");
+        throw new UnsupportedOperationException("This is a static class and cannot be instantiated.");
     }
 
 //-------------------start-of-getInput()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -156,47 +151,6 @@ public class Toolkit
         {
             // skip
         }
-    }
-
-//-------------------start-of-handleCriticalException()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Handles a critical exception.
-     * @param e Exception - the exception we are handling
-     */
-
-    public static void handleCriticalException(Exception e)
-    {
-        System.out.println("Critical Exception: " + e.getMessage());
-
-        for (StackTraceElement ste : e.getStackTrace()) 
-        {
-            System.out.println(ste.toString());
-        }
-
-        System.out.println("\nKusariKey will now exit");
-
-        pauseConsole();
-
-        exitKusariKey();
-        
-    }
-
-//-------------------start-of-exitKusariKey()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Exits KusariKey.
-     */
-
-    public static void exitKusariKey()
-    {
-        clearConsole();
-
-        System.out.println("Exiting KusariKey...");
-
-        Logger.pushBatch();
-
-        System.exit(0);
     }
 
 //-------------------start-of-levenshtein()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
