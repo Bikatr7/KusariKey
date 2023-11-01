@@ -25,6 +25,7 @@ public class Logger
 
         logPath = FileEnsurer.generateLogFile();
         logWriter = new FileWriter(logPath.toString(), true);
+        clearLogFile();
 
         });
     }

@@ -151,7 +151,8 @@ public class FileUtil
 
         writer.write(line_to_write + "\n");
 
-        switchToFile(oldPath);
+        if(oldPath != null)
+            switchToFile(oldPath);
 
     }
 
@@ -208,7 +209,7 @@ public class FileUtil
      * @throws IOException
      */
 
-    public static String readSeiLine(Path path_to_read_from, int target_line, int column) throws IOException
+    public static String readSeiLine(Path path_to_read_from, int target_line, int column) throws IOException, IndexOutOfBoundsException
     {
         String line_to_read = "";
 

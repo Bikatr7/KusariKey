@@ -71,7 +71,7 @@ public class ConnectionHandler
         
         } 
         // if credentials not present, get new credentials
-        catch (IllegalArgumentException | NullPointerException | SQLException |IOException e)
+        catch (IllegalArgumentException | NullPointerException | SQLException | IOException | IndexOutOfBoundsException e)
         {
             try 
             {
@@ -105,7 +105,7 @@ public class ConnectionHandler
                 
                 
             } 
-            catch(IllegalArgumentException | NullPointerException | SQLException | IOException ex)
+            catch(IllegalArgumentException | NullPointerException | SQLException | IOException | IndexOutOfBoundsException ex)
             {
                 System.err.println("Error with creating connection to database. Please check your credentials");
 

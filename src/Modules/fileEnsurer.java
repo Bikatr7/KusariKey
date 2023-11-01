@@ -40,8 +40,6 @@ public class FileEnsurer
         if(!Files.exists(logFile))
             Files.createFile(logFile);
 
-        Logger.clearLogFile();
-
         return logFile;
     }
 
