@@ -33,6 +33,18 @@ public class ConnectionHandler
     {
         this.connection = initializeDatabaseConnection();
     }
+
+//-------------------start-of-getConnection()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Gets the database connection
+     * @return connection - Connection The database connection
+     */
+
+    public Connection getConnection()
+    {
+        return connection;
+    }
     
 //-------------------start-of-initializeDatabaseConnection()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
