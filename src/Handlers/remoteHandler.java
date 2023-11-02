@@ -1,18 +1,17 @@
 package Handlers;
 
-// custom modules
-import Modules.FileEnsurer;
-import Modules.Toolkit;
+//-------------------start-of-RemoteHandler---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class RemoteHandler 
 {
 
- private FileEnsurer fileEnsurer;
- private Toolkit toolkit;
+//-------------------start-of-RemoteHandler()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     public RemoteHandler() throws Exception
     {
         ConnectionHandler connectionHandler = new ConnectionHandler();
     }
+
+    
 
 }

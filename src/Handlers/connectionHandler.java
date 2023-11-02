@@ -3,27 +3,29 @@ package Handlers;
 // built-in libraries
 import java.util.Base64;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 // third-party libraries
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
-import Modules.ExceptionUtil;
 // custom modules
 import Modules.FileEnsurer;
 import Modules.Toolkit;
 import Modules.FileUtil;
+import Modules.ExceptionUtil;
 
 //-------------------start-of-ConnectionHandler---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class ConnectionHandler 
 {
     private Connection connection;
+    private Statement statement;
 
 //-------------------start-of-ConnectionHandler()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -78,6 +80,8 @@ public class ConnectionHandler
             {
                 Toolkit.clearConsole();
 
+                System.out.println("KusariKey requires a database to store its data. Please enter the credentials for the database you would like to use.\n\n");
+
                 System.out.print("Please enter the name of the database you are connecting to: ");
                 database_name = input.nextLine();
 
@@ -116,4 +120,107 @@ public class ConnectionHandler
         
         return connection;
     }
-}
+    
+//-------------------start-of-executeQuery()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Executes a query
+     * @param query - String The query to be executed
+     * @throws SQLException
+     */
+
+    public void executeQuery(String query) throws SQLException 
+    {
+        if (statement == null) 
+        {
+            statement = connection.createStatement();
+        }
+
+        statement.execute(query);
+        connection.commit();
+    }
+
+//-------------------start-of-readSingleColumnQuery()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Executes a query and returns the results
+     * @param query - String The query to be executed
+     * @return results - List<String> The results of the query
+     * @throws SQLException
+     */
+
+    public List<String> readSingleColumnQuery(String query) throws SQLException 
+    {
+        List<String> results = new ArrayList<>();
+
+        if (statement == null) 
+        {
+            statement = connection.createStatement();
+        }
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) 
+        {
+            results.add(resultSet.getString(1)); // getting the first column
+        }
+
+        return results;
+    }
+
+//-------------------start-of-readMultiColumnQuery()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Executes a query and returns the results
+     * @param query - String The query to be executed
+     * @return resultsByColumn - List<List<String>> The results of the query
+     * @throws SQLException
+     */
+
+    public List<List<String>> readMultiColumnQuery(String query) throws SQLException 
+    {
+        List<List<String>> resultsByColumn = new ArrayList<>();
+
+        if (statement == null) {
+            statement = connection.createStatement();
+        }
+
+        ResultSet resultSet = statement.executeQuery(query);
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        for (int i = 0; i < columnCount; i++) 
+        {
+            resultsByColumn.add(new ArrayList<>());
+        }
+
+        while (resultSet.next()) 
+        {
+            for (int i = 1; i <= columnCount; i++) 
+            {
+                resultsByColumn.get(i - 1).add(resultSet.getString(i));
+            }
+        }
+
+        return resultsByColumn;
+    }
+
+//-------------------start-of-insertIntoTable()---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Inserts data into a table
+     * @param tableName - String The name of the table to insert into
+     * @param data - Map<String, String> The data to be inserted
+     * @throws SQLException
+     */
+
+    public void insertIntoTable(String tableName, Map<String, String> data) throws SQLException 
+    {
+        String columns = String.join(", ", data.keySet());
+        String values = String.join(", ", data.values().stream().map(v -> "'" + v + "'").toArray(String[]::new));
+        String query = String.format("INSERT INTO %s (%s) VALUES (%s)", tableName, columns, values);
+
+        executeQuery(query);
+    }
+ 
+} // end of class ConnectionHandler
