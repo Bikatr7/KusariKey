@@ -45,5 +45,7 @@ public class KusariKey
         FileEnsurer.ensureFiles();
 
         remoteHandler = new RemoteHandler();
+
+    
     }
 }
