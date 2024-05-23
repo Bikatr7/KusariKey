@@ -1,3 +1,3 @@
 **KusariKey**
 ------------------------------------------------------------------
-WIP.
+Played around with java and mysql with a loose attempt at a password manager
